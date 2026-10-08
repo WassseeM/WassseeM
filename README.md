@@ -1,54 +1,101 @@
-# Ahmed Waseem — Developer Portfolio ⚡
+# 👋 Hi, I'm Ahmed Waseem
 
-A high-performance single-page developer portfolio for **Ahmed Waseem** (B.Tech Computer Science student and software/frontend developer).
+### 💻 B.Tech CSE Student | Aspiring Software Developer
 
-Built with a **3D Flying Code Background Matrix**, an ultra-smooth **Interactive 3D Developer Crystal Core**, an **Apple-grade minimalist dark aesthetic**, a **Developer Command HUD (Ctrl+K)**, and a strict **two-color typography system (White + Electric Green #00FF88)**.
+I'm a Computer Science student passionate about programming, problem-solving and building useful projects.
 
----
-
-## ✨ Features & Architecture
-
-1. **Distinctive Brand Logo (AHMED WASEEM)**:
-   - Modern `[AW]` monogram emblem with glowing frame.
-   - High-contrast `AHMED` with lightly shot `WASEEM` frosted pill badge.
-   - Interactive **Matrix Decrypt / Scramble** hover animation.
-2. **Ultra-Optimized 3D Developer Crystal Core (60-120 FPS Zero Lag)**:
-   - Central faceted obsidian icosahedron with inner glowing electric green plasma core.
-   - Dual-axis gyroscope tech rings + orbiting data particle constellation.
-   - Independent tilt vs. continuous spin hierarchy (eliminates rotation stutter).
-   - **Interactive 3D Mode Switcher**: `✦ CRYSTAL`, `⬡ QUANTUM ORB`, `⚛ CYBER MATRIX`.
-   - Click to discharge holographic pulse shockwave.
-3. **Flying Code 3D Matrix Background**:
-   - Fast 2D/3D canvas particle system rendering real programming syntax (`int`, `float`, `vector<int>`, `std::cout`, loops, pointers, etc.).
-   - Interactive mouse repulsion wave + **Hyperspace Warp Speed Mode**.
-4. **Developer Command HUD / Spotlight (`Ctrl+K` / `Cmd+K`)**:
-   - Quick searchable command palette (`skills`, `warp`, `whoami`, `contact`, `sudo hire` Easter egg).
-5. **Interactive Skill Inspector (Skill Names Only)**:
-   - Clean badges for: `C`, `C++`, `Java`, `Python`, `HTML5`, `CSS`, `JavaScript`, `SQL`, `GitHub`, `Vercel`, `Netlify`, `Render`, `Supabase`, `Canva`.
-   - Dynamic inspector bar showing Ahmed Waseem's technical engineering focus for each technology.
-6. **Web Audio Synthesizer**:
-   - Zero external files; generated in real-time via Web Audio API when sound is enabled.
-7. **Interactive Code Playground**:
-   - Live tab switcher (`AhmedWaseem.cpp`, `AhmedWaseem.js`, `AhmedWaseem.py`) with copy button.
-8. **Contact & Achievements**:
-   - Direct links, copy email action, responsive contact transmission, and live local time clock.
+- 🎓 Currently pursuing B.Tech in Computer Science Engineering
+- 💻 Learning C, C++, Java, Python & SQL
+- 🧠 Improving my Data Structures & Algorithms skills
+- 🚀 Interested in Software Development
+- 📚 Always learning something new
+- ⚡ Turning ideas into code
 
 ---
 
-## 🛠️ Tech Stack
+## 🌐 Socials
 
-- **Structure**: Semantic HTML5
-- **Styling**: Vanilla CSS3 (CSS Variables, Flexbox, Grid, Glassmorphism)
-- **3D Graphics & Engine**: Three.js (WebGL) + HTML5 Canvas
-- **Logic**: Vanilla ES6+ JavaScript (Web Audio API, IntersectionObserver, Clipboard API)
+<p align="left">
+
+<a href="https://www.linkedin.com/in/ahmed-waseem-3285103a8/">
+<img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"/>
+</a>
+
+<a href="https://github.com/WassseeM">
+<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white"/>
+</a>
+
+<a href="YOUR_INSTAGRAM_LINK">
+<img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white"/>
+</a>
+
+</p>
 
 ---
 
-## 🚀 Running Locally
+## 💻 Tech Stack
 
-```bash
-# Using npx
-npx serve -p 3000
+<p align="left">
 
-# Or open index.html directly in your browser
-```
+<img src="https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white"/>
+
+<img src="https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white"/>
+
+<img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white"/>
+
+<img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white"/>
+
+<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
+
+<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white"/>
+
+<img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white"/>
+
+<img src="https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white"/>
+
+<img src="https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white"/>
+
+<img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white"/>
+
+<img src="https://img.shields.io/badge/Canva-00C4CC?style=for-the-badge&logo=canva&logoColor=white"/>
+
+</p>
+
+
+
+
+## 📫 Contact Me
+
+<p align="left">
+
+<a href="https://www.linkedin.com/in/ahmed-waseem-3285103a8/">
+<img src="https://img.shields.io/badge/LinkedIn-Profile-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"/>
+</a>
+
+<a href="https://github.com/WassseeM">
+<img src="https://img.shields.io/badge/GitHub-Profile-181717?style=for-the-badge&logo=github&logoColor=white"/>
+</a>
+
+</p>
+
+---
+
+<h3 align="center">
+
+✨ Learning • Building • Improving ✨
+
+</h3>
+
+<h4 align="center">
+
+"Consistency is the key to becoming better every day."
+
+</h4>
+
+---
+
+<p align="center">
+
+<img src="https://komarev.com/ghpvc/?username=WassseeM&label=Profile%20Views&color=0e75b6&style=flat"/>
+
+</p>
