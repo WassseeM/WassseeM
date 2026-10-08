@@ -6,10 +6,11 @@ I'm a Computer Science student passionate about programming, problem-solving and
 
 - 🎓 Currently pursuing B.Tech in Computer Science Engineering
 - 💻 Learning C, C++, Java, Python & SQL
-- 🧠 Improving my Data Structures & Algorithms skills
 - 🚀 Interested in Software Development
 - 📚 Always learning something new
 - ⚡ Turning ideas into code
+
+👨‍💻 All of my projects are available at https://wassseem.vercel.app
 
 ---
 
