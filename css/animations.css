@@ -1,0 +1,96 @@
+/* ==========================================================================
+   ANIMATIONS & KEYFRAMES
+   ========================================================================== */
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes ledPulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 10px var(--accent-green); }
+  50% { opacity: 0.4; box-shadow: 0 0 3px var(--accent-green); }
+}
+
+@keyframes scanlineSweep {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(300px); opacity: 0; }
+}
+
+@keyframes glitchAnim {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes radarSweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes cyberFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px var(--accent-green-glow);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(0, 255, 102, 0.6);
+  }
+}
+
+@keyframes levelUpCelebration {
+  0% { transform: scale(0.8); opacity: 0; filter: brightness(2); }
+  50% { transform: scale(1.05); filter: brightness(1.5); }
+  100% { transform: scale(1); opacity: 1; filter: brightness(1); }
+}
+
+/* Helper animation classes */
+.animate-float {
+  animation: cyberFloat 4s ease-in-out infinite;
+}
+
+.animate-pulse {
+  animation: pulseGlow 2.5s infinite;
+}
+
+.glitch-hover:hover {
+  animation: glitchAnim 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+/* Glitch text effect for Hero */
+.glitch-text {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.glitch-text:hover::before {
+  left: 2px;
+  text-shadow: -2px 0 var(--accent-rose);
+  animation: glitchAnim 0.2s infinite;
+}
+
+.glitch-text:hover::after {
+  left: -2px;
+  text-shadow: -2px 0 var(--accent-cyan);
+  animation: glitchAnim 0.2s infinite reverse;
+}

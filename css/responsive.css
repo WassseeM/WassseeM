@@ -1,0 +1,144 @@
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
+/* Tablet & Smaller Desktops */
+@media (max-width: 992px) {
+  .hero-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .hero-3d-wrapper {
+    height: 440px;
+    order: -1;
+  }
+
+  .about-split-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .featured-project-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .achievements-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile Viewports */
+@media (max-width: 768px) {
+  .nav-menu, .nav-status-pill, .cmd-kbd-shortcut {
+    display: none;
+  }
+
+  .nav-toggle-btn {
+    display: flex;
+  }
+
+  .brand-monogram {
+    padding: 2px 6px;
+  }
+
+  .monogram-code {
+    font-size: 0.68rem;
+  }
+
+  .brand-name-wrap {
+    gap: 5px;
+  }
+
+  .brand-full-name {
+    font-size: 0.88rem;
+    letter-spacing: 0.03em;
+  }
+
+  .nav-right-tools {
+    gap: 6px;
+  }
+
+  .cmd-trigger-btn, .warp-btn {
+    padding: 5px 8px;
+    font-size: 0.7rem;
+  }
+
+  .section-wrapper {
+    padding: 80px 20px;
+  }
+
+  .hero-section {
+    padding-top: calc(var(--header-height) + 20px);
+  }
+
+  .hero-title-greeting {
+    font-size: clamp(2.2rem, 9vw, 3.2rem);
+  }
+
+  .hero-title-statement {
+    font-size: clamp(1.8rem, 7.5vw, 2.6rem);
+  }
+
+  .hero-3d-wrapper {
+    height: 350px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
+  .hero-meta-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .skills-name-grid {
+    gap: 10px;
+  }
+
+  .skill-name-pill {
+    padding: 10px 18px;
+    font-size: 0.95rem;
+  }
+
+  .skill-inspector-bar {
+    padding: 12px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .featured-project-card {
+    padding: 22px;
+  }
+
+  .contact-form-card {
+    padding: 24px;
+  }
+
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .toast-container {
+    bottom: 20px;
+    right: 20px;
+    left: 20px;
+  }
+
+  .minimal-toast {
+    justify-content: center;
+  }
+}

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ahmed Waseem — Software Developer & B.Tech CS Student</title>
+  <meta name="description" content="Personal portfolio of Ahmed Waseem. B.Tech Computer Science student focused on software development, frontend engineering, and modern digital experiences.">
+  <meta name="author" content="Ahmed Waseem">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ahmed Waseem — Software Developer & B.Tech CS Student">
+  <meta property="og:description" content="Building modern websites and solving problems with code. Explore my skills, background, and achievements.">
+
+  <!-- Google Fonts: Syne, Inter, Space Grotesk, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <!-- Three.js CDN for 3D Developer Crystal Core -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       FLYING CODE BACKGROUND CANVAS & AMBIENT VIGNETTE
+       ========================================================================== -->
+  <canvas id="flying-code-canvas" aria-hidden="true"></canvas>
+  <div class="ambient-vignette" aria-hidden="true"></div>
+
+  <!-- ==========================================================================
+       1. FIXED MINIMAL NAVBAR
+       ========================================================================== -->
+  <header class="site-navbar" id="navbar">
+    <div class="nav-container">
+      <!-- World-Class Professional Brand Logo: AHMED WASEEM -->
+      <a href="#hero" class="nav-brand" id="brand-logo" aria-label="Ahmed Waseem Portfolio">
+        <div class="brand-monogram">
+          <span class="monogram-code">&lt;AW/&gt;</span>
+        </div>
+        <div class="brand-name-wrap">
+          <span class="brand-full-name" data-text="AHMED WASEEM">AHMED WASEEM</span>
+          <span class="brand-dot-indicator"></span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <a href="#hero" class="nav-link active">Home</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#achievements" class="nav-link">Achievements</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+
+      <!-- Right Tools: Command HUD + Warp Speed + Status -->
+      <div class="nav-right-tools">
+        <button class="cmd-trigger-btn" id="btn-cmd-trigger" title="Open Developer Command HUD (Ctrl+K)">
+          <span>&gt;_</span>
+          <span>CMD</span>
+          <span class="cmd-kbd-shortcut">Ctrl+K</span>
+        </button>
+
+        <button class="warp-btn" id="btn-warp-mode" title="Toggle Hyperspace Code Warp Animation">
+          <span>⚡</span>
+          <span>WARP</span>
+        </button>
+
+        <div class="nav-status-pill">
+          <span class="nav-status-dot"></span>
+          <span>Online &amp; Building</span>
+        </div>
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button class="nav-toggle-btn" id="nav-toggle-btn" aria-label="Toggle Navigation Menu">
+        ☰
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-menu-drawer" id="mobile-drawer" aria-label="Mobile Navigation">
+    <a href="#hero" class="mobile-nav-link">Home</a>
+    <a href="#about" class="mobile-nav-link">About</a>
+    <a href="#skills" class="mobile-nav-link">Skills</a>
+    <a href="#projects" class="mobile-nav-link">Projects</a>
+    <a href="#achievements" class="mobile-nav-link">Achievements</a>
+    <a href="#contact" class="mobile-nav-link">Contact</a>
+  </div>
+
+  <main>
+    <!-- ==========================================================================
+         2. HERO SECTION
+         ========================================================================== -->
+    <section class="hero-section" id="hero">
+      <div class="hero-layout">
+        <!-- Left Column: Content -->
+        <div class="hero-content">
+          <div class="hero-tag">
+            <span>&lt;STUDENT_ENGINEER /&gt;</span>
+          </div>
+
+          <h1 class="hero-title-greeting">Hi, I'm Ahmed Waseem.</h1>
+          <h2 class="hero-title-statement">I BUILD WITH CODE.</h2>
+
+          <div class="hero-subtitle-wrap">
+            <span id="typewriter-text">B.Tech Computer Science Student</span>
+            <span class="typewriter-cursor">_</span>
+          </div>
+
+          <p class="hero-description">
+            Passionate about programming, frontend development and creating clean, modern digital experiences.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#skills" class="btn btn-primary">
+              <span>Explore Skills</span>
+              <span>→</span>
+            </a>
+            <a href="#contact" class="btn btn-ghost">
+              <span>Contact Me</span>
+            </a>
+          </div>
+
+          <div class="hero-meta-grid">
+            <div class="hero-meta-item">
+              <span class="hero-meta-label">Discipline</span>
+              <span class="hero-meta-value">B.Tech CS Undergrad</span>
+            </div>
+            <div class="hero-meta-item">
+              <span class="hero-meta-label">Specialization</span>
+              <span class="hero-meta-value">Software &amp; Web Dev</span>
+            </div>
+            <div class="hero-meta-item">
+              <span class="hero-meta-label">Availability</span>
+              <span class="hero-meta-value highlight-green">Open to Roles</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: 3D Cyber Matrix Artifact (Bigger Size, Zero Lag) -->
+        <div class="hero-3d-wrapper" id="hero-3d-wrapper">
+          <canvas id="hero-3d-canvas" aria-label="Interactive 3D Cyber Matrix"></canvas>
+          <div class="canvas-hint">Drag to rotate • Click to pulse</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         3. ABOUT SECTION & CODE PLAYGROUND
+         ========================================================================== -->
+    <section class="section-wrapper reveal-on-scroll" id="about">
+      <div class="section-header">
+        <span class="section-tag">About</span>
+        <h2 class="section-title">Developer Profile</h2>
+        <p class="section-description">
+          Computer Science student with strong fundamentals in algorithms, frontend systems, and software engineering.
+        </p>
+      </div>
+
+      <div class="about-quote">
+        Building <span class="highlight-green">modern websites</span> and solving complex problems with <span class="highlight-green">code</span>.
+      </div>
+
+      <div class="about-split-layout">
+        <!-- Left: 3 Value Pillars -->
+        <div class="about-cards-col">
+          <div class="about-card">
+            <span class="about-card-index">01</span>
+            <h3 class="about-card-title">Software Development</h3>
+            <p class="about-card-text">
+              Designing clean logic, modular components, and reliable backend integrations with a relentless focus on code quality.
+            </p>
+          </div>
+
+          <div class="about-card">
+            <span class="about-card-index">02</span>
+            <h3 class="about-card-title">Frontend Engineering</h3>
+            <p class="about-card-text">
+              Crafting fluid, accessible, and responsive user interfaces with modern JavaScript, CSS architectures, and interactive 3D elements.
+            </p>
+          </div>
+
+          <div class="about-card">
+            <span class="about-card-index">03</span>
+            <h3 class="about-card-title">Problem Solving</h3>
+            <p class="about-card-text">
+              Approaching challenges analytically through deep understanding of Data Structures and Algorithms in C++, Java, and Python.
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: Interactive Code Playground Window -->
+        <div class="code-window">
+          <div class="code-window-header">
+            <div class="code-window-tabs">
+              <button class="code-tab-btn active" data-lang="cpp">AhmedWaseem.cpp</button>
+              <button class="code-tab-btn" data-lang="js">AhmedWaseem.js</button>
+              <button class="code-tab-btn" data-lang="py">AhmedWaseem.py</button>
+            </div>
+            <button class="code-copy-btn" id="btn-copy-code" title="Copy code snippet">
+              <span>📋</span> <span>Copy Snippet</span>
+            </button>
+          </div>
+
+          <div class="code-window-body" id="code-window-body">
+            <!-- Populated via js/main.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         4. SKILLS SECTION: SKILL NAMES ONLY (CLEAN MODERN BADGES)
+         ========================================================================== -->
+    <section class="section-wrapper reveal-on-scroll" id="skills">
+      <div class="section-header">
+        <span class="section-tag">Tech Stack</span>
+        <h2 class="section-title">Technical Skills</h2>
+        <p class="section-description">
+          Languages, frameworks, database systems, and deployment platforms in my active development stack.
+        </p>
+      </div>
+
+      <!-- Clean Skill Names Grid (Interactive Inspector) -->
+      <div class="skills-name-grid" id="skills-name-grid">
+        <div class="skill-name-pill active" data-skill="C" data-desc="Low-level memory management, pointers, and systems programming fundamentals."><span class="skill-dot-prefix">●</span><span>C</span></div>
+        <div class="skill-name-pill" data-skill="C++" data-desc="Object-oriented programming, STL data structures, algorithms, and competitive problem solving."><span class="skill-dot-prefix">●</span><span>C++</span></div>
+        <div class="skill-name-pill" data-skill="Java" data-desc="Object-oriented architecture, modular backend logic, and CS foundational concepts."><span class="skill-dot-prefix">●</span><span>Java</span></div>
+        <div class="skill-name-pill" data-skill="Python" data-desc="Algorithmic problem solving, automation scripting, and logic implementation."><span class="skill-dot-prefix">●</span><span>Python</span></div>
+        <div class="skill-name-pill" data-skill="HTML5" data-desc="Semantic, accessible, and SEO-optimized markup structure."><span class="skill-dot-prefix">●</span><span>HTML5</span></div>
+        <div class="skill-name-pill" data-skill="CSS" data-desc="Modern layout architectures (Flexbox, Grid), responsive systems, and CSS custom properties."><span class="skill-dot-prefix">●</span><span>CSS</span></div>
+        <div class="skill-name-pill" data-skill="JavaScript" data-desc="Modern ES6+, asynchronous programming, DOM interactions, and 3D WebGL animations."><span class="skill-dot-prefix">●</span><span>JavaScript</span></div>
+        <div class="skill-name-pill" data-skill="SQL" data-desc="Relational schema design, querying, joins, aggregation, and database management."><span class="skill-dot-prefix">●</span><span>SQL</span></div>
+        <div class="skill-name-pill" data-skill="GitHub" data-desc="Version control, Git workflows, branching strategies, and CI/CD pipelines."><span class="skill-dot-prefix">●</span><span>GitHub</span></div>
+        <div class="skill-name-pill" data-skill="Vercel" data-desc="Lightning-fast edge deployment and continuous delivery for modern web apps."><span class="skill-dot-prefix">●</span><span>Vercel</span></div>
+        <div class="skill-name-pill" data-skill="Netlify" data-desc="Automated JAMstack hosting, serverless edge functions, and continuous builds."><span class="skill-dot-prefix">●</span><span>Netlify</span></div>
+        <div class="skill-name-pill" data-skill="Render" data-desc="Cloud application hosting, web service scaling, and backend deployments."><span class="skill-dot-prefix">●</span><span>Render</span></div>
+        <div class="skill-name-pill" data-skill="Supabase" data-desc="PostgreSQL backend, realtime subscriptions, authentication, and secure storage."><span class="skill-dot-prefix">●</span><span>Supabase</span></div>
+        <div class="skill-name-pill" data-skill="Canva" data-desc="UI/UX wireframing, layout prototyping, brand graphics, and asset design."><span class="skill-dot-prefix">●</span><span>Canva</span></div>
+      </div>
+
+      <!-- Skill Technical Insight Inspector Bar -->
+      <div class="skill-inspector-bar" id="skill-inspector-bar">
+        <span class="skill-inspector-icon">⚡</span>
+        <span class="skill-inspector-text" id="skill-inspector-text">
+          <span class="skill-inspector-highlight">Click or hover any skill</span> to inspect Ahmed Waseem's engineering focus &amp; applications.
+        </span>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         5. FEATURED PRODUCTION PROJECT (UMMAKJ ARCHITECTURE STUDIO)
+         ========================================================================== -->
+    <section class="section-wrapper reveal-on-scroll" id="projects">
+      <div class="section-header">
+        <span class="section-tag">Production Project</span>
+        <h2 class="section-title">Featured Work</h2>
+        <p class="section-description">
+          A live production-grade web application engineered with modern frontend architecture, interactive dynamics, and edge deployment.
+        </p>
+      </div>
+
+      <div class="featured-project-card">
+        <div class="featured-project-layout">
+          <!-- Left: Details -->
+          <div class="featured-project-content">
+            <div class="project-badge-row">
+              <span class="project-status-live">
+                <span class="live-pulse-dot"></span>
+                <span>Live on Vercel</span>
+              </span>
+              <span class="project-category-tag">Architecture &amp; Design Platform</span>
+            </div>
+
+            <h3 class="featured-project-title">UMMAKJ Architecture Studio</h3>
+            <p class="featured-project-tagline">“Creating Architecture Beyond Time”</p>
+
+            <p class="featured-project-desc">
+              Engineered a luxury, high-performance architecture studio web application featuring an interactive blueprint mode, fluid parallax dynamics, bespoke typography, and high-fidelity project showcases. Designed with Next.js and deployed to edge infrastructure.
+            </p>
+
+            <div class="featured-project-stack">
+              <span class="tech-pill">Next.js</span>
+              <span class="tech-pill">React</span>
+              <span class="tech-pill">TypeScript</span>
+              <span class="tech-pill">Tailwind CSS</span>
+              <span class="tech-pill">Vercel Edge</span>
+            </div>
+
+            <div class="featured-project-actions">
+              <a href="https://neww-eight-nu.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                <span>Launch Live Website</span>
+                <span>↗</span>
+              </a>
+              <a href="https://github.com/WassseeM" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+                <span>View GitHub Profile</span>
+                <span>🐙</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: Interactive Live Browser Preview Frame -->
+          <div class="featured-project-preview">
+            <a href="https://neww-eight-nu.vercel.app/" target="_blank" rel="noopener noreferrer" class="preview-browser-frame" title="Click to visit live website">
+              <div class="preview-browser-header">
+                <div class="browser-dots">
+                  <span class="b-dot red"></span>
+                  <span class="b-dot yellow"></span>
+                  <span class="b-dot green"></span>
+                </div>
+                <div class="browser-url-bar">
+                  <span class="url-lock">🔒</span>
+                  <span class="url-text">neww-eight-nu.vercel.app</span>
+                </div>
+                <span class="browser-live-tag">LIVE ↗</span>
+              </div>
+              <div class="preview-browser-body">
+                <div class="preview-studio-hero">
+                  <div class="studio-blueprint-badge">Blueprint 001</div>
+                  <div class="studio-brand-title">UMMAKJ</div>
+                  <div class="studio-sub-title">ARCHITECTURE STUDIO</div>
+                  <p class="studio-quote">Designing Tomorrow's Landmarks</p>
+                  <div class="preview-enter-btn">
+                    <span>Visit Live Site</span>
+                    <span>→</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         6. ACHIEVEMENTS SECTION
+         ========================================================================== -->
+    <section class="section-wrapper reveal-on-scroll" id="achievements">
+      <div class="section-header">
+        <span class="section-tag">Milestones</span>
+        <h2 class="section-title">Achievements</h2>
+        <p class="section-description">
+          Certifications, academic achievements, coding milestones, and technical accomplishments.
+        </p>
+      </div>
+
+      <div class="achievements-grid">
+        <!-- Item 1 -->
+        <div class="achievement-card">
+          <div class="achievement-icon-box">01</div>
+          <div class="achievement-details">
+            <span class="achievement-tag">Academics</span>
+            <h3 class="achievement-title">B.Tech CS Foundations</h3>
+            <p class="achievement-desc">
+              Strong mastery of foundational computer science core subjects: Data Structures, OOP, DBMS, and OS.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="achievement-card">
+          <div class="achievement-icon-box">02</div>
+          <div class="achievement-details">
+            <span class="achievement-tag">Certification</span>
+            <h3 class="achievement-title">Full-Stack Web Development</h3>
+            <p class="achievement-desc">
+              Completed comprehensive frontend and modern web application development curriculum.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="achievement-card">
+          <div class="achievement-icon-box">03</div>
+          <div class="achievement-details">
+            <span class="achievement-tag">Problem Solving</span>
+            <h3 class="achievement-title">100+ Coding Problems Solved</h3>
+            <p class="achievement-desc">
+              Practiced and solved algorithmic challenges across C++, Python, and Java on competitive coding platforms.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="achievement-card">
+          <div class="achievement-icon-box">04</div>
+          <div class="achievement-details">
+            <span class="achievement-tag">Cloud &amp; Deployment</span>
+            <h3 class="achievement-title">Production Deployments</h3>
+            <p class="achievement-desc">
+              Engineered and deployed multiple interactive web applications live on Vercel, Netlify, and Render.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         6. CONTACT SECTION
+         ========================================================================== -->
+    <section class="section-wrapper reveal-on-scroll" id="contact">
+      <div class="section-header">
+        <span class="section-tag">Get In Touch</span>
+        <h2 class="section-title">LET'S BUILD SOMETHING.</h2>
+        <p class="section-description">
+          Open for internship opportunities, freelance software projects, and technical collaborations.
+        </p>
+      </div>
+
+      <div class="contact-layout">
+        <!-- Left: Channels -->
+        <div class="contact-info">
+          <div class="contact-headline">
+            Ready to start a conversation or collaborate on a project?
+          </div>
+
+          <div class="contact-channels">
+            <!-- Email -->
+            <div class="contact-channel-item" data-copy="ahmedwaseemu@gmail.com" title="Click to copy email address">
+              <div class="channel-left">
+                <span class="channel-icon">✉</span>
+                <div>
+                  <div class="channel-name">Email</div>
+                  <div class="channel-handle">ahmedwaseemu@gmail.com</div>
+                </div>
+              </div>
+              <span class="channel-action">Copy ↗</span>
+            </div>
+
+            <!-- GitHub -->
+            <a href="https://github.com/WassseeM" target="_blank" rel="noopener noreferrer" class="contact-channel-item">
+              <div class="channel-left">
+                <span class="channel-icon">🐙</span>
+                <div>
+                  <div class="channel-name">GitHub</div>
+                  <div class="channel-handle">@WassseeM</div>
+                </div>
+              </div>
+              <span class="channel-action">Follow ↗</span>
+            </a>
+
+            <!-- LinkedIn -->
+            <a href="https://www.linkedin.com/in/ahmedwaseemu/" target="_blank" rel="noopener noreferrer" class="contact-channel-item">
+              <div class="channel-left">
+                <span class="channel-icon">💼</span>
+                <div>
+                  <div class="channel-name">LinkedIn</div>
+                  <div class="channel-handle">in/ahmedwaseemu</div>
+                </div>
+              </div>
+              <span class="channel-action">Connect ↗</span>
+            </a>
+
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/__was_eem?stkn=MWQ4MGNkcDB2bDJjMg==" target="_blank" rel="noopener noreferrer" class="contact-channel-item">
+              <div class="channel-left">
+                <span class="channel-icon">📸</span>
+                <div>
+                  <div class="channel-name">Instagram</div>
+                  <div class="channel-handle">@__was_eem</div>
+                </div>
+              </div>
+              <span class="channel-action">View ↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Contact Form -->
+        <div class="contact-form-card">
+          <form id="contact-form">
+            <div class="form-group">
+              <label for="form-name" class="form-label">Your Name</label>
+              <input type="text" id="form-name" class="form-input" placeholder="e.g. Alex Smith" required>
+            </div>
+
+            <div class="form-group">
+              <label for="form-email" class="form-label">Email Address</label>
+              <input type="email" id="form-email" class="form-input" placeholder="e.g. alex@company.com" required>
+            </div>
+
+            <div class="form-group">
+              <label for="form-message" class="form-label">Message</label>
+              <textarea id="form-message" class="form-textarea" placeholder="Write your project details or opportunity here..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+              <span>Send Message</span>
+              <span>→</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       7. FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <span>Designed &amp; Built by Ahmed Waseem</span>
+        <span class="footer-code-anim">&lt; / &gt;</span>
+      </div>
+      <div class="footer-right" id="footer-clock">
+        Local Time: --:--:--
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       8. DEVELOPER COMMAND HUD / SPOTLIGHT MODAL (SURPRISE FEATURE)
+       ========================================================================== -->
+  <div class="cmd-palette-backdrop" id="cmd-palette-backdrop" aria-hidden="true">
+    <div class="cmd-palette-modal" role="dialog" aria-modal="true">
+      <div class="cmd-palette-header">
+        <span class="cmd-prefix-icon">&gt;_</span>
+        <input type="text" class="cmd-palette-input" id="cmd-palette-input" placeholder="Type a command (e.g. 'skills', 'warp', 'whoami', 'sudo hire')..." autocomplete="off">
+        <button class="cmd-close-btn" id="cmd-close-btn" title="Close (Esc)">✕</button>
+      </div>
+      <div class="cmd-palette-list" id="cmd-palette-list">
+        <div class="cmd-item" data-cmd="skills">
+          <div class="cmd-item-left">
+            <span class="cmd-item-icon">●</span>
+            <span>skills</span>
+            <span class="cmd-item-desc">— Explore technical stack</span>
+          </div>
+          <span class="cmd-item-key">Jump</span>
+        </div>
+        <div class="cmd-item" data-cmd="projects">
+          <div class="cmd-item-left">
+            <span class="cmd-item-icon">🚀</span>
+            <span>projects</span>
+            <span class="cmd-item-desc">— View live UMMAKJ Architecture Studio project</span>
+          </div>
+          <span class="cmd-item-key">Jump</span>
+        </div>
+        <div class="cmd-item" data-cmd="warp">
+          <div class="cmd-item-left">
+            <span class="cmd-item-icon">⚡</span>
+            <span>warp</span>
+            <span class="cmd-item-desc">— Toggle Hyperspace Code Warp</span>
+          </div>
+          <span class="cmd-item-key">Action</span>
+        </div>
+        <div class="cmd-item" data-cmd="whoami">
+          <div class="cmd-item-left">
+            <span class="cmd-item-icon">👨‍💻</span>
+            <span>whoami</span>
+            <span class="cmd-item-desc">— Print Ahmed Waseem's bio</span>
+          </div>
+          <span class="cmd-item-key">Info</span>
+        </div>
+        <div class="cmd-item" data-cmd="contact">
+          <div class="cmd-item-left">
+            <span class="cmd-item-icon">✉</span>
+            <span>contact</span>
+            <span class="cmd-item-desc">— Jump to contact form</span>
+          </div>
+          <span class="cmd-item-key">Jump</span>
+        </div>
+        <div class="cmd-item" data-cmd="sudo hire">
+          <div class="cmd-item-left">
+            <span class="cmd-item-icon">🎉</span>
+            <span>sudo hire</span>
+            <span class="cmd-item-desc">— Unlock secret developer offer</span>
+          </div>
+          <span class="cmd-item-key">Easter Egg</span>
+        </div>
+      </div>
+      <div class="cmd-palette-footer">
+        <span>Navigate: <kbd>↑</kbd> <kbd>↓</kbd></span>
+        <span>Execute: <kbd>Enter</kbd></span>
+        <span>Close: <kbd>Esc</kbd></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/flying-code.js"></script>
+  <script src="js/three-scene.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

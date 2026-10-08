@@ -1,0 +1,61 @@
+/* ==========================================================================
+   DESIGN TOKENS & SYSTEM
+   Aesthetic: World-Class Developer Portfolio (Pure Black + White + #00FF88)
+   ========================================================================== */
+
+:root {
+  /* Core Backgrounds (Pure Deep Black / Carbon Layers) */
+  --bg-primary: #040406;
+  --bg-secondary: #09090d;
+  --bg-tertiary: #0f0f14;
+  --bg-card: rgba(18, 18, 24, 0.55);
+  --bg-card-hover: rgba(26, 26, 36, 0.75);
+  --bg-glass: rgba(4, 4, 6, 0.82);
+  --bg-input: rgba(255, 255, 255, 0.035);
+
+  /* Primary Typography (White & Clean Off-White) */
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1;
+  --text-muted: #64748b;
+  --text-code: #e2e8f0;
+  --text-dark: #040406;
+
+  /* ONLY ONE ACCENT COLOR: Electric Green (#00FF88) */
+  --accent-green: #00ff88;
+  --accent-green-glow: rgba(0, 255, 136, 0.35);
+  --accent-green-dim: #00cc6a;
+  --accent-green-soft: rgba(0, 255, 136, 0.08);
+  --accent-green-border: rgba(0, 255, 136, 0.35);
+
+  /* Borders & Dividers */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-light: rgba(255, 255, 255, 0.16);
+  --border-hover: rgba(0, 255, 136, 0.45);
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Space Grotesk', 'Inter', -apple-system, sans-serif;
+  --font-brand: 'Syne', 'Space Grotesk', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Shadows & Glows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.8);
+  --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.95);
+  --shadow-green: 0 0 30px rgba(0, 255, 136, 0.3);
+  --shadow-green-lg: 0 0 50px rgba(0, 255, 136, 0.2);
+
+  /* Dimensions & Radius */
+  --max-width: 1220px;
+  --header-height: 76px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-pill: 9999px;
+
+  /* Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-base: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}

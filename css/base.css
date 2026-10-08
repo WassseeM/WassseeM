@@ -1,0 +1,179 @@
+/* ==========================================================================
+   BASE & RESET STYLES
+   ========================================================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  color-scheme: dark;
+  background-color: var(--bg-primary);
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.65;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Flying Code Canvas Background */
+#flying-code-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Ambient Radial Mask (Keeps center readable) */
+.ambient-vignette {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 30%, rgba(5, 5, 5, 0.4) 0%, rgba(5, 5, 5, 0.92) 80%);
+}
+
+/* Minimal Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: var(--radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-green);
+  box-shadow: 0 0 10px var(--accent-green-glow);
+}
+
+/* Selection Highlight */
+::selection {
+  background: var(--accent-green);
+  color: #000000;
+}
+
+/* Links & Buttons */
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: inherit;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+/* Section Containers */
+.section-wrapper {
+  position: relative;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 120px 28px;
+  z-index: 2;
+}
+
+.section-header {
+  margin-bottom: 56px;
+}
+
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent-green);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.section-tag::before {
+  content: "//";
+  color: var(--accent-green);
+  font-weight: 700;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  line-height: 1.15;
+}
+
+.section-description {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 640px;
+  margin-top: 14px;
+  line-height: 1.6;
+}
+
+/* Text Glow & Code Highlights */
+.highlight-green {
+  color: var(--accent-green);
+  font-weight: 600;
+  text-shadow: 0 0 16px var(--accent-green-glow);
+}
+
+.code-pill {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--accent-green);
+  background: var(--accent-green-soft);
+  border: 1px solid var(--accent-green-border);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  display: inline-block;
+}
+
+/* Scroll Reveal */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
