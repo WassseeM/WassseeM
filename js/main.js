@@ -134,8 +134,10 @@ class PortfolioApp {
     };
 
     this.brandLogo.addEventListener('mouseenter', () => {
-      const nameEl = this.brandLogo.querySelector('.brand-full-name');
-      if (nameEl) scrambleEl(nameEl, 'AHMED WASEEM');
+      const first = this.brandLogo.querySelector('.bn-first');
+      const last = this.brandLogo.querySelector('.bn-last');
+      if (first) scrambleEl(first, 'AHMED');
+      if (last) scrambleEl(last, 'WASEEM');
     });
   }
 

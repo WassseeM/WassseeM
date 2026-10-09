@@ -47,10 +47,61 @@ class FlyingCodeMatrix {
 
     // Device-aware frame cap (30fps mobile / 60fps desktop)
     this.isMobile = window.innerWidth < 768;
-    this.targetInterval = this.isMobile ? 1000 / 30 : 1000 / 60;
+    this.baseTarget = this.isMobile ? 30 : 60;
+    this.targetInterval = 1000 / this.baseTarget;
     this.lastTime = performance.now();
 
+    // Adaptive performance governor
+    this.maxTier = 2;
+    this.tier = this.maxTier;
+    this.drawLimit = 1.0;
+    this.perfFrames = 0;
+    this.perfTime = 0;
+    this.totalTime = 0;
+    this.badWindows = 0;
+    this.goodWindows = 0;
+    this.lastRaf = 0;
+
     this.init();
+  }
+
+  // --- Auto-tune density + frame rate so the background never lags ----------
+  applyTier() {
+    if (this.tier >= 2) {
+      this.drawLimit = 1.0;
+      this.targetInterval = 1000 / this.baseTarget;
+    } else if (this.tier === 1) {
+      this.drawLimit = 0.7;
+      this.targetInterval = 1000 / (this.isMobile ? 30 : 45);
+    } else {
+      this.drawLimit = 0.5;
+      this.targetInterval = 1000 / 30;
+    }
+  }
+
+  evaluatePerformance(fps) {
+    const target = this.baseTarget;
+
+    if (fps < target * 0.65) {
+      this.goodWindows = 0;
+      this.badWindows++;
+      if (this.badWindows >= 2 && this.tier > 0) {
+        this.tier--;
+        this.applyTier();
+        this.badWindows = 0;
+      }
+    } else if (fps > target * 0.92) {
+      this.badWindows = 0;
+      this.goodWindows++;
+      if (this.goodWindows >= 4 && this.tier < this.maxTier) {
+        this.tier++;
+        this.applyTier();
+        this.goodWindows = 0;
+      }
+    } else {
+      this.badWindows = 0;
+      this.goodWindows = 0;
+    }
   }
 
   init() {
@@ -73,6 +124,7 @@ class FlyingCodeMatrix {
       this.isTabActive = !document.hidden;
       if (this.isTabActive) {
         this.lastTime = performance.now();
+        this.lastRaf = 0;
         requestAnimationFrame((t) => this.render(t));
       }
     });
@@ -119,6 +171,21 @@ class FlyingCodeMatrix {
   render(currentTime) {
     if (!this.isTabActive) return;
 
+    const rafDelta = this.lastRaf ? Math.min(currentTime - this.lastRaf, 100) : 16.7;
+    this.lastRaf = currentTime;
+
+    // Adaptive performance: sample real (native) frame pacing
+    this.totalTime += rafDelta;
+    this.perfFrames++;
+    this.perfTime += rafDelta;
+    if (this.perfTime >= 1000) {
+      if (this.totalTime > 3000) {
+        this.evaluatePerformance((this.perfFrames * 1000) / this.perfTime);
+      }
+      this.perfFrames = 0;
+      this.perfTime = 0;
+    }
+
     // Frame limiter: skip draws to keep mobile GPU/battery cool
     if (currentTime - this.lastTime < this.targetInterval - 1) {
       requestAnimationFrame((t) => this.render(t));
@@ -152,7 +219,7 @@ class FlyingCodeMatrix {
     this.ctx.font = '600 12px "JetBrains Mono", monospace';
     this.ctx.textBaseline = 'middle';
 
-    const pLen = this.particles.length;
+    const pLen = Math.max(1, Math.round(this.particles.length * this.drawLimit));
     for (let i = 0; i < pLen; i++) {
       const p = this.particles[i];
 

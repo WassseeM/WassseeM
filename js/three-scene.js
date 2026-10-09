@@ -37,10 +37,20 @@ class DeveloperCodeSphere {
     this.isVisible = true;
     this.isTabActive = true;
 
-    // Frame limiter (30fps on mobile, 60fps desktop)
+    // Frame limiter + adaptive performance governor
     this.clock = new THREE.Clock();
     this.lastRender = 0;
-    this.targetInterval = this.isMobile ? 1000 / 30 : 1000 / 60;
+    this.baseTarget = this.isMobile ? 30 : 60;
+    this.maxTier = 2;
+    this.tier = this.maxTier;
+    this.targetInterval = 1000 / this.baseTarget;
+    this.perfFrames = 0;
+    this.perfTime = 0;
+    this.totalTime = 0;
+    this.badWindows = 0;
+    this.goodWindows = 0;
+    this.lastRaf = 0;
+    this.calibrated = false;
 
     // Floating syntax tokens for the code globe
     this.tokenLabels = [
@@ -65,7 +75,6 @@ class DeveloperCodeSphere {
     this.fitCamera();
 
     // Locked pixel ratio on mobile to eliminate GPU thermal load / micro-stutter
-    const dpr = this.isMobile ? 1.0 : Math.min(window.devicePixelRatio || 1.0, 1.5);
     this.renderer = new THREE.WebGLRenderer({
       canvas: document.getElementById('hero-3d-canvas'),
       antialias: !this.isMobile,
@@ -74,7 +83,7 @@ class DeveloperCodeSphere {
       precision: 'mediump'
     });
     this.renderer.setSize(width, height);
-    this.renderer.setPixelRatio(dpr);
+    this.applyTier();
 
     this.tiltGroup = new THREE.Group();
     this.spinGroup = new THREE.Group();
@@ -107,6 +116,88 @@ class DeveloperCodeSphere {
     const zVertical = half / Math.tan(halfFov);
     const zHorizontal = half / (Math.tan(halfFov) * this.camera.aspect);
     this.camera.position.set(0, 0, Math.max(zVertical, zHorizontal));
+  }
+
+  // --- Apply the current quality tier (adaptive performance) ----------------
+  applyTier() {
+    if (!this.renderer) return;
+    const nativeDpr = Math.min(window.devicePixelRatio || 1, this.isMobile ? 1.0 : 1.5);
+
+    let ratio, fps;
+    if (this.tier >= 2) {
+      ratio = nativeDpr;
+      fps = this.baseTarget;
+    } else if (this.tier === 1) {
+      ratio = Math.min(nativeDpr, this.isMobile ? 0.9 : 1.0);
+      fps = this.isMobile ? 30 : 45;
+    } else {
+      ratio = this.isMobile ? 0.75 : 0.85;
+      fps = 30;
+    }
+
+    this.renderer.setPixelRatio(ratio);
+    this.targetInterval = 1000 / fps;
+    if (this.nodes) this.nodes.visible = this.tier > 0;
+  }
+
+  // --- Watch real frame pacing and adjust quality so it never lags ----------
+  evaluatePerformance(fps) {
+    const target = this.baseTarget;
+
+    // One-time calibration: match high-refresh desktop displays (up to 120Hz)
+    if (!this.calibrated) {
+      this.calibrated = true;
+      if (!this.isMobile && fps > 75) {
+        const refresh = Math.min(120, Math.max(60, Math.round(fps / 10) * 10));
+        if (refresh > this.baseTarget) {
+          this.baseTarget = refresh;
+          this.applyTier();
+        }
+      }
+    }
+
+    if (fps < target * 0.65) {
+      this.goodWindows = 0;
+      this.badWindows++;
+      if (this.badWindows >= 2 && this.tier > 0) {
+        this.tier--;
+        this.applyTier();
+        this.badWindows = 0;
+      }
+    } else if (fps > target * 0.92) {
+      this.badWindows = 0;
+      this.goodWindows++;
+      if (this.goodWindows >= 4 && this.tier < this.maxTier) {
+        this.tier++;
+        this.applyTier();
+        this.goodWindows = 0;
+      }
+    } else {
+      this.badWindows = 0;
+      this.goodWindows = 0;
+    }
+  }
+
+  // --- Soft radial glow used as a luminous backdrop behind the sphere -------
+  createGlowTexture() {
+    const size = 256;
+    const canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
+    const g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+    g.addColorStop(0, 'rgba(0,255,136,0.55)');
+    g.addColorStop(0.35, 'rgba(0,255,136,0.22)');
+    g.addColorStop(0.7, 'rgba(0,255,136,0.07)');
+    g.addColorStop(1, 'rgba(0,255,136,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, size, size);
+
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.minFilter = THREE.LinearFilter;
+    tex.magFilter = THREE.LinearFilter;
+    tex.generateMipmaps = false;
+    return tex;
   }
 
   // --- Build a glowing text texture for a single code token -----------------
@@ -149,6 +240,21 @@ class DeveloperCodeSphere {
   buildScene() {
     const isMobile = this.isMobile;
 
+    // 0. Luminous halo behind the sphere so it never reads as a black blob
+    this.halo = new THREE.Sprite(
+      new THREE.SpriteMaterial({
+        map: this.createGlowTexture(),
+        transparent: true,
+        opacity: isMobile ? 0.9 : 0.7,
+        depthWrite: false,
+        depthTest: false,
+        blending: THREE.AdditiveBlending
+      })
+    );
+    this.halo.scale.set(5.4, 5.4, 1);
+    this.halo.renderOrder = -1;
+    this.spinGroup.add(this.halo);
+
     // 1. Glowing wireframe "code globe"
     const sphereGeo = new THREE.SphereGeometry(
       1.6,
@@ -159,7 +265,7 @@ class DeveloperCodeSphere {
     const globeMat = new THREE.LineBasicMaterial({
       color: 0x00ff88,
       transparent: true,
-      opacity: 0.26
+      opacity: isMobile ? 0.42 : 0.3
     });
     this.sphereMesh = new THREE.LineSegments(globeGeo, globeMat);
     this.spinGroup.add(this.sphereMesh);
@@ -171,7 +277,7 @@ class DeveloperCodeSphere {
       new THREE.MeshBasicMaterial({
         color: 0x00ff88,
         transparent: true,
-        opacity: 0.16,
+        opacity: isMobile ? 0.28 : 0.16,
         depthWrite: false,
         blending: THREE.AdditiveBlending
       })
@@ -238,7 +344,7 @@ class DeveloperCodeSphere {
       ? this.tokenLabels.filter((_, i) => i % 2 === 0)
       : this.tokenLabels;
     const count = labels.length;
-    const tokenH = isMobile ? 0.3 : 0.36;
+    const tokenH = isMobile ? 0.34 : 0.36;
     const goldenAngle = Math.PI * (3 - Math.sqrt(5));
 
     for (let i = 0; i < count; i++) {
@@ -250,7 +356,7 @@ class DeveloperCodeSphere {
       const material = new THREE.SpriteMaterial({
         map: tex,
         transparent: true,
-        opacity: isAccent ? 0.95 : 0.7,
+        opacity: isAccent ? 1.0 : 0.85,
         depthWrite: false,
         blending: isAccent ? THREE.AdditiveBlending : THREE.NormalBlending
       });
@@ -398,18 +504,32 @@ class DeveloperCodeSphere {
     this.fitCamera();
 
     this.renderer.setSize(width, height);
-    const dpr = this.isMobile ? 1.0 : Math.min(window.devicePixelRatio || 1.0, 1.5);
-    this.renderer.setPixelRatio(dpr);
+    this.applyTier();
   }
 
   animate() {
     requestAnimationFrame(() => this.animate());
 
+    const now = performance.now();
+    const rafDelta = this.lastRaf ? Math.min(now - this.lastRaf, 100) : 16.7;
+    this.lastRaf = now;
+
     if (!this.isVisible || !this.isTabActive) return;
 
-    // Frame limiter: keeps mobile cool without visible stutter
-    const now = performance.now();
-    if (now - this.lastRender < this.targetInterval - 1) return;
+    // Adaptive performance: sample real (native) frame pacing
+    this.totalTime += rafDelta;
+    this.perfFrames++;
+    this.perfTime += rafDelta;
+    if (this.perfTime >= 1000) {
+      if (this.totalTime > 3000) {
+        this.evaluatePerformance((this.perfFrames * 1000) / this.perfTime);
+      }
+      this.perfFrames = 0;
+      this.perfTime = 0;
+    }
+
+    // Frame limiter: keeps weak devices cool without visible stutter
+    if (this.lastRender && now - this.lastRender < this.targetInterval - 1) return;
     this.lastRender = now;
 
     const delta = Math.min(this.clock.getDelta(), 0.06);
@@ -459,7 +579,13 @@ class DeveloperCodeSphere {
     // Pulse expansion + core glow breathing
     const pulseScale = 1.0 + this.pulseEnergy * 0.2;
     this.coreGlow.scale.set(pulseScale, pulseScale, pulseScale);
-    this.coreGlow.material.opacity = 0.14 + Math.sin(time * 2) * 0.04 + this.pulseEnergy * 0.3;
+    const coreBase = this.isMobile ? 0.26 : 0.14;
+    this.coreGlow.material.opacity = coreBase + Math.sin(time * 2) * 0.04 + this.pulseEnergy * 0.3;
+
+    if (this.halo) {
+      const hs = 5.4 + Math.sin(time * 1.6) * 0.18 + this.pulseEnergy * 0.6;
+      this.halo.scale.set(hs, hs, 1);
+    }
 
     this.rings.forEach(ring => {
       const s = 1.0 + this.pulseEnergy * 0.08;
