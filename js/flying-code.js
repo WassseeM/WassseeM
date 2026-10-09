@@ -95,8 +95,8 @@ class FlyingCodeMatrix {
 
   createParticles() {
     this.particles = [];
-    // Lightweight count: 28 for mobile, 45 for desktop (super fast 120fps)
-    const count = this.width < 768 ? 26 : 46;
+    // Ultra-lightweight count on mobile (16) vs desktop (42) for locked 60-120fps
+    const count = this.width < 768 ? 16 : 42;
 
     for (let i = 0; i < count; i++) {
       const snippet = this.snippets[i % this.snippets.length];

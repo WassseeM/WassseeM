@@ -68,15 +68,17 @@ class DeveloperCyberMatrix {
   }
 
   setupLighting() {
-    const ambient = new THREE.AmbientLight(0xffffff, 0.95);
+    // Soft, balanced ambient light (no washed-out blowout)
+    const ambient = new THREE.AmbientLight(0xffffff, 1.1);
     this.scene.add(ambient);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1.3);
+    // Subtle directional key light
+    const keyLight = new THREE.DirectionalLight(0xe2fbf5, 0.85);
     keyLight.position.set(5, 7, 6);
     this.scene.add(keyLight);
 
-    // Electric Green Rim Light (#00FF88)
-    this.greenLight = new THREE.PointLight(0x00ff88, 3.5, 12);
+    // Balanced Emerald Point Light (gentle glow, eliminates mobile WebGL glare error)
+    this.greenLight = new THREE.PointLight(0x00ff88, 1.6, 14);
     this.greenLight.position.set(2.2, 1.8, 3.0);
     this.scene.add(this.greenLight);
   }
@@ -87,12 +89,14 @@ class DeveloperCyberMatrix {
     this.tiltGroup.add(this.spinGroup);
     this.scene.add(this.tiltGroup);
 
-    // 1. Central Faceted Dark Obsidian Core
+    const isMobile = window.innerWidth < 768;
+
+    // 1. Central Faceted Dark Obsidian Core (Metallic cyber surface without specular blowout)
     const coreGeo = new THREE.IcosahedronGeometry(1.42, 0);
     const coreMat = new THREE.MeshStandardMaterial({
-      color: 0x121318,
-      metalness: 0.9,
-      roughness: 0.2,
+      color: 0x12141a,
+      metalness: 0.65,
+      roughness: 0.45,
       flatShading: true
     });
     this.coreMesh = new THREE.Mesh(coreGeo, coreMat);
@@ -121,21 +125,21 @@ class DeveloperCyberMatrix {
     this.spinGroup.add(this.cageMesh);
 
     // 4. Primary Orbital Gyroscope Ring (Electric Green)
-    const ring1Geo = new THREE.TorusGeometry(2.75, 0.02, 6, 42);
+    const ring1Geo = new THREE.TorusGeometry(2.75, 0.02, 5, isMobile ? 28 : 42);
     const ring1Mat = new THREE.MeshBasicMaterial({ color: 0x00ff88, transparent: true, opacity: 0.7 });
     this.ringPrimary = new THREE.Mesh(ring1Geo, ring1Mat);
     this.ringPrimary.rotation.x = Math.PI / 3;
     this.spinGroup.add(this.ringPrimary);
 
     // 5. Secondary Intersecting Gyroscope Ring (Light Silver)
-    const ring2Geo = new THREE.TorusGeometry(3.1, 0.014, 6, 42);
+    const ring2Geo = new THREE.TorusGeometry(3.1, 0.014, 5, isMobile ? 28 : 42);
     const ring2Mat = new THREE.MeshBasicMaterial({ color: 0xcbd5e1, transparent: true, opacity: 0.4 });
     this.ringSecondary = new THREE.Mesh(ring2Geo, ring2Mat);
     this.ringSecondary.rotation.y = Math.PI / 3.5;
     this.spinGroup.add(this.ringSecondary);
 
-    // 6. Data Constellation (32 points)
-    const pCount = 32;
+    // 6. Data Constellation
+    const pCount = isMobile ? 18 : 32;
     const pGeo = new THREE.BufferGeometry();
     const pos = new Float32Array(pCount * 3);
 
@@ -197,33 +201,59 @@ class DeveloperCyberMatrix {
       }
     });
 
-    // Touch Support
+    // Touch Support for Mobile - smooth rotation without scroll lag/hijacking
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let isTouchScroll = false;
+
     canvas.addEventListener('touchstart', (e) => {
       if (e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        this.prevMouse = { x: touchStartX, y: touchStartY };
         this.isDragging = true;
-        this.prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        isTouchScroll = false;
       }
+    }, { passive: true });
+
+    canvas.addEventListener('touchmove', (e) => {
+      if (!this.isDragging || e.touches.length !== 1 || !this.spinGroup) return;
+
+      const currentX = e.touches[0].clientX;
+      const currentY = e.touches[0].clientY;
+      const totalDx = Math.abs(currentX - touchStartX);
+      const totalDy = Math.abs(currentY - touchStartY);
+
+      // If user is scrolling vertically down the page, yield to browser scrolling immediately
+      if (!isTouchScroll && totalDy > totalDx && totalDy > 8) {
+        isTouchScroll = true;
+        this.isDragging = false;
+        return;
+      }
+
+      if (isTouchScroll) return;
+
+      const dx = currentX - this.prevMouse.x;
+      const dy = currentY - this.prevMouse.y;
+
+      // Smooth damped rotation on horizontal touch gesture
+      this.dragVelocity.x = dx * 0.0035;
+      this.dragVelocity.y = dy * 0.0035;
+      this.spinGroup.rotation.y += this.dragVelocity.x;
+      this.spinGroup.rotation.x += this.dragVelocity.y;
+
+      this.prevMouse = { x: currentX, y: currentY };
     }, { passive: true });
 
     window.addEventListener('touchend', () => {
       this.isDragging = false;
-    });
-
-    canvas.addEventListener('touchmove', (e) => {
-      if (this.isDragging && e.touches.length === 1 && this.spinGroup) {
-        const dx = e.touches[0].clientX - this.prevMouse.x;
-        const dy = e.touches[0].clientY - this.prevMouse.y;
-
-        this.spinGroup.rotation.y += dx * 0.007;
-        this.spinGroup.rotation.x += dy * 0.007;
-
-        this.prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-      }
+      isTouchScroll = false;
     }, { passive: true });
 
     // Click to pulse
     canvas.addEventListener('click', () => {
-      this.pulseEnergy = 1.0;
+      if (isTouchScroll) return;
+      this.pulseEnergy = 0.8;
       if (window.showToast) {
         window.showToast("⚡ Ahmed Waseem: Cyber Matrix Pulse Active");
       }
@@ -307,7 +337,7 @@ class DeveloperCyberMatrix {
     this.ringPrimary.scale.set(1.0 + this.pulseEnergy * 0.1, 1.0 + this.pulseEnergy * 0.1, 1.0 + this.pulseEnergy * 0.1);
 
     if (this.greenLight) {
-      this.greenLight.intensity = 3.5 + this.pulseEnergy * 3.5;
+      this.greenLight.intensity = 1.6 + this.pulseEnergy * 1.5;
     }
 
     this.renderer.render(this.scene, this.camera);

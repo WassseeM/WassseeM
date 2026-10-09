@@ -462,6 +462,8 @@
   height: 100% !important;
   outline: none;
   cursor: grab;
+  touch-action: pan-y;
+  will-change: transform;
 }
 
 #hero-3d-canvas:active {
@@ -691,19 +693,19 @@
 
 .skills-name-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
 }
 
 .skill-name-pill {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 13px;
   background: rgba(13, 13, 19, 0.75);
   backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 12px 18px 12px 14px;
-  border-radius: 16px;
+  padding: 10px 18px 10px 12px;
+  border-radius: 14px;
   transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
               background 0.25s ease,
               border-color 0.25s ease,
@@ -734,8 +736,8 @@
 
 /* 3D Real Logo Box & Tactile Shadow Icon */
 .skill-logo-wrap {
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -774,40 +776,21 @@
 
 /* Authentic Silhouette Drop Shadow on the Vector SVG */
 .skill-logo-svg {
-  width: 26px;
-  height: 26px;
+  width: 25px;
+  height: 25px;
   display: block;
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.75)) drop-shadow(0 2px 4px var(--brand-shadow, rgba(0, 255, 136, 0.3)));
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
               filter 0.3s ease;
 }
 
-.skill-info-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-  overflow: hidden;
-  flex: 1;
-}
-
 .skill-title {
   font-family: var(--font-display);
-  font-size: 1.05rem;
+  font-size: 1.02rem;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.01em;
   white-space: nowrap;
-  transition: color var(--transition-fast);
-}
-
-.skill-cat-tag {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   transition: color var(--transition-fast);
 }
 
@@ -854,11 +837,6 @@
 .skill-name-pill:hover .skill-title,
 .skill-name-pill.active .skill-title {
   color: #ffffff;
-}
-
-.skill-name-pill:hover .skill-cat-tag,
-.skill-name-pill.active .skill-cat-tag {
-  color: var(--brand-color, var(--accent-green));
 }
 
 /* ==========================================================================
