@@ -1,7 +1,7 @@
 /* ==========================================================================
-   THREE.JS 3D CYBER MATRIX ARTIFACT (ULTRA-HIGH PERFORMANCE, LOCKED 60-120FPS)
-   Engineered with pixel-ratio 1.0, separated tilt/spin hierarchy,
-   low-poly faceted buffers, and offscreen/tab pause.
+   THREE.JS 3D CYBER MATRIX ARTIFACT (ULTRA-SMOOTH MOBILE & HIGH PERFORMANCE)
+   Engineered with smooth geodesic geometry, dual-directional cyber lighting,
+   clamped pitch drag physics, and zero-flicker liquid reflections.
    ========================================================================== */
 
 class DeveloperCyberMatrix {
@@ -13,7 +13,7 @@ class DeveloperCyberMatrix {
     this.camera = null;
     this.renderer = null;
 
-    // Independent groups: tilt (mouse) vs. spin (continuous rotation)
+    // Independent groups: tilt (mouse + drag) vs. spin (continuous rotation)
     this.tiltGroup = null;
     this.spinGroup = null;
 
@@ -26,11 +26,11 @@ class DeveloperCyberMatrix {
     this.particles = null;
     this.greenLight = null;
 
-    // Physics & Interaction
+    // Physics & Interaction (Smooth lerp momentum)
     this.mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
+    this.dragRotation = { x: 0, y: 0, targetX: 0, targetY: 0 };
     this.isDragging = false;
-    this.prevMouse = { x: 0, y: 0 };
-    this.dragVelocity = { x: 0, y: 0 };
+    this.prevTouch = { x: 0, y: 0 };
     this.pulseEnergy = 0;
     this.isVisible = true;
     this.isTabActive = true;
@@ -46,11 +46,12 @@ class DeveloperCyberMatrix {
     const width = this.container.clientWidth || 500;
     const height = this.container.clientHeight || 520;
 
-    // Camera placed closer at 6.1 for a prominent, bold Cyber Matrix
+    // Camera perspective
     this.camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 40);
     this.camera.position.set(0, 0, 6.1);
 
-    // Locked pixel ratio 1.0 to eliminate GPU load and micro-stutter
+    // Locked pixel ratio 1.0 on mobile to eliminate GPU thermal load and micro-stutter
+    const dpr = window.innerWidth < 768 ? 1.0 : Math.min(window.devicePixelRatio || 1.0, 1.5);
     this.renderer = new THREE.WebGLRenderer({
       canvas: document.getElementById('hero-3d-canvas'),
       antialias: true,
@@ -59,7 +60,7 @@ class DeveloperCyberMatrix {
       precision: 'mediump'
     });
     this.renderer.setSize(width, height);
-    this.renderer.setPixelRatio(1.0);
+    this.renderer.setPixelRatio(dpr);
 
     this.setupLighting();
     this.buildCyberMatrixGeometry();
@@ -68,18 +69,23 @@ class DeveloperCyberMatrix {
   }
 
   setupLighting() {
-    // Soft, balanced ambient light (no washed-out blowout)
-    const ambient = new THREE.AmbientLight(0xffffff, 1.1);
+    // 1. Soft Ambient Illumination
+    const ambient = new THREE.AmbientLight(0xffffff, 0.85);
     this.scene.add(ambient);
 
-    // Subtle directional key light
-    const keyLight = new THREE.DirectionalLight(0xe2fbf5, 0.85);
-    keyLight.position.set(5, 7, 6);
+    // 2. Primary Key Light (Crisp White sheen from top-right)
+    const keyLight = new THREE.DirectionalLight(0xffffff, 1.15);
+    keyLight.position.set(4.5, 6.0, 5.0);
     this.scene.add(keyLight);
 
-    // Balanced Emerald Point Light (gentle glow, eliminates mobile WebGL glare error)
-    this.greenLight = new THREE.PointLight(0x00ff88, 1.6, 14);
-    this.greenLight.position.set(2.2, 1.8, 3.0);
+    // 3. Electric Emerald Rim Light from behind-left (creates gorgeous cyber rim reflection)
+    const rimLight = new THREE.DirectionalLight(0x00ff88, 1.3);
+    rimLight.position.set(-5.0, 2.0, -3.5);
+    this.scene.add(rimLight);
+
+    // 4. Dynamic Point Light in front of the core for rich specular highlight
+    this.greenLight = new THREE.PointLight(0x00ff88, 1.5, 12);
+    this.greenLight.position.set(1.8, 1.5, 3.2);
     this.scene.add(this.greenLight);
   }
 
@@ -91,19 +97,19 @@ class DeveloperCyberMatrix {
 
     const isMobile = window.innerWidth < 768;
 
-    // 1. Central Faceted Dark Obsidian Core (Metallic cyber surface without specular blowout)
-    const coreGeo = new THREE.IcosahedronGeometry(1.42, 0);
+    // 1. Central Smooth Geodesic Dark Obsidian Core (Zero-flicker liquid cyber reflection)
+    const coreGeo = new THREE.IcosahedronGeometry(1.38, isMobile ? 1 : 2);
     const coreMat = new THREE.MeshStandardMaterial({
-      color: 0x12141a,
-      metalness: 0.65,
-      roughness: 0.45,
-      flatShading: true
+      color: 0x0d1017,
+      metalness: 0.88,
+      roughness: 0.22,
+      flatShading: false
     });
     this.coreMesh = new THREE.Mesh(coreGeo, coreMat);
     this.spinGroup.add(this.coreMesh);
 
-    // 2. Inner Glowing Energy Core
-    const innerGeo = new THREE.OctahedronGeometry(0.9, 0);
+    // 2. Inner Glowing Energy Octahedron Core
+    const innerGeo = new THREE.OctahedronGeometry(0.88, 0);
     const innerMat = new THREE.MeshBasicMaterial({
       color: 0x00ff88,
       wireframe: true,
@@ -114,31 +120,31 @@ class DeveloperCyberMatrix {
     this.spinGroup.add(this.innerMesh);
 
     // 3. Outer Geodesic Wireframe Cage
-    const cageGeo = new THREE.IcosahedronGeometry(2.05, 0);
+    const cageGeo = new THREE.IcosahedronGeometry(1.98, 0);
     const edges = new THREE.EdgesGeometry(cageGeo);
     const lineMat = new THREE.LineBasicMaterial({
       color: 0x00ff88,
       transparent: true,
-      opacity: 0.75
+      opacity: 0.7
     });
     this.cageMesh = new THREE.LineSegments(edges, lineMat);
     this.spinGroup.add(this.cageMesh);
 
-    // 4. Primary Orbital Gyroscope Ring (Electric Green)
-    const ring1Geo = new THREE.TorusGeometry(2.75, 0.02, 5, isMobile ? 28 : 42);
-    const ring1Mat = new THREE.MeshBasicMaterial({ color: 0x00ff88, transparent: true, opacity: 0.7 });
+    // 4. Primary Orbital Gyroscope Ring (Electric Emerald)
+    const ring1Geo = new THREE.TorusGeometry(2.68, 0.02, 6, isMobile ? 30 : 48);
+    const ring1Mat = new THREE.MeshBasicMaterial({ color: 0x00ff88, transparent: true, opacity: 0.75 });
     this.ringPrimary = new THREE.Mesh(ring1Geo, ring1Mat);
     this.ringPrimary.rotation.x = Math.PI / 3;
     this.spinGroup.add(this.ringPrimary);
 
-    // 5. Secondary Intersecting Gyroscope Ring (Light Silver)
-    const ring2Geo = new THREE.TorusGeometry(3.1, 0.014, 5, isMobile ? 28 : 42);
-    const ring2Mat = new THREE.MeshBasicMaterial({ color: 0xcbd5e1, transparent: true, opacity: 0.4 });
+    // 5. Secondary Intersecting Gyroscope Ring (Platinum Light Silver)
+    const ring2Geo = new THREE.TorusGeometry(3.02, 0.015, 6, isMobile ? 30 : 48);
+    const ring2Mat = new THREE.MeshBasicMaterial({ color: 0xcbd5e1, transparent: true, opacity: 0.45 });
     this.ringSecondary = new THREE.Mesh(ring2Geo, ring2Mat);
     this.ringSecondary.rotation.y = Math.PI / 3.5;
     this.spinGroup.add(this.ringSecondary);
 
-    // 6. Data Constellation
+    // 6. Data Constellation (Orbiting Data Points)
     const pCount = isMobile ? 18 : 32;
     const pGeo = new THREE.BufferGeometry();
     const pos = new Float32Array(pCount * 3);
@@ -167,41 +173,39 @@ class DeveloperCyberMatrix {
   bindEvents() {
     window.addEventListener('resize', () => this.onResize(), { passive: true });
 
+    // Subtle mouse parallax on desktop
     window.addEventListener('mousemove', (e) => {
       const x = (e.clientX / window.innerWidth) * 2 - 1;
       const y = -(e.clientY / window.innerHeight) * 2 + 1;
-      this.mouse.targetX = x * 0.3;
-      this.mouse.targetY = y * 0.2;
+      this.mouse.targetX = x * 0.28;
+      this.mouse.targetY = y * 0.18;
     }, { passive: true });
 
     const canvas = this.renderer.domElement;
 
+    // Desktop Mouse Drag
     canvas.addEventListener('mousedown', (e) => {
       this.isDragging = true;
-      this.prevMouse = { x: e.clientX, y: e.clientY };
-      this.dragVelocity = { x: 0, y: 0 };
+      this.prevTouch = { x: e.clientX, y: e.clientY };
     });
 
     window.addEventListener('mouseup', () => {
       this.isDragging = false;
     });
 
-    canvas.addEventListener('mousemove', (e) => {
-      if (this.isDragging && this.spinGroup) {
-        const dx = e.clientX - this.prevMouse.x;
-        const dy = e.clientY - this.prevMouse.y;
+    window.addEventListener('mousemove', (e) => {
+      if (this.isDragging) {
+        const dx = e.clientX - this.prevTouch.x;
+        const dy = e.clientY - this.prevTouch.y;
 
-        this.dragVelocity.x = dx * 0.006;
-        this.dragVelocity.y = dy * 0.006;
+        this.dragRotation.targetY += dx * 0.007;
+        this.dragRotation.targetX = Math.max(-0.65, Math.min(0.65, this.dragRotation.targetX + dy * 0.007));
 
-        this.spinGroup.rotation.y += this.dragVelocity.x;
-        this.spinGroup.rotation.x += this.dragVelocity.y;
-
-        this.prevMouse = { x: e.clientX, y: e.clientY };
+        this.prevTouch = { x: e.clientX, y: e.clientY };
       }
     });
 
-    // Touch Support for Mobile - smooth rotation without scroll lag/hijacking
+    // Touch Support for Mobile (Butter-smooth horizontal drag + instant vertical page scrolling)
     let touchStartX = 0;
     let touchStartY = 0;
     let isTouchScroll = false;
@@ -210,14 +214,14 @@ class DeveloperCyberMatrix {
       if (e.touches.length === 1) {
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
-        this.prevMouse = { x: touchStartX, y: touchStartY };
+        this.prevTouch = { x: touchStartX, y: touchStartY };
         this.isDragging = true;
         isTouchScroll = false;
       }
     }, { passive: true });
 
     canvas.addEventListener('touchmove', (e) => {
-      if (!this.isDragging || e.touches.length !== 1 || !this.spinGroup) return;
+      if (!this.isDragging || e.touches.length !== 1) return;
 
       const currentX = e.touches[0].clientX;
       const currentY = e.touches[0].clientY;
@@ -225,7 +229,7 @@ class DeveloperCyberMatrix {
       const totalDy = Math.abs(currentY - touchStartY);
 
       // If user is scrolling vertically down the page, yield to browser scrolling immediately
-      if (!isTouchScroll && totalDy > totalDx && totalDy > 8) {
+      if (!isTouchScroll && totalDy > totalDx && totalDy > 7) {
         isTouchScroll = true;
         this.isDragging = false;
         return;
@@ -233,16 +237,14 @@ class DeveloperCyberMatrix {
 
       if (isTouchScroll) return;
 
-      const dx = currentX - this.prevMouse.x;
-      const dy = currentY - this.prevMouse.y;
+      const dx = currentX - this.prevTouch.x;
+      const dy = currentY - this.prevTouch.y;
 
-      // Smooth damped rotation on horizontal touch gesture
-      this.dragVelocity.x = dx * 0.0035;
-      this.dragVelocity.y = dy * 0.0035;
-      this.spinGroup.rotation.y += this.dragVelocity.x;
-      this.spinGroup.rotation.x += this.dragVelocity.y;
+      // Smooth horizontal rotation + clamped pitch on mobile touch
+      this.dragRotation.targetY += dx * 0.008;
+      this.dragRotation.targetX = Math.max(-0.65, Math.min(0.65, this.dragRotation.targetX + dy * 0.008));
 
-      this.prevMouse = { x: currentX, y: currentY };
+      this.prevTouch = { x: currentX, y: currentY };
     }, { passive: true });
 
     window.addEventListener('touchend', () => {
@@ -250,7 +252,7 @@ class DeveloperCyberMatrix {
       isTouchScroll = false;
     }, { passive: true });
 
-    // Click to pulse
+    // Click / Tap to pulse energy
     canvas.addEventListener('click', () => {
       if (isTouchScroll) return;
       this.pulseEnergy = 0.8;
@@ -284,7 +286,8 @@ class DeveloperCyberMatrix {
     this.camera.updateProjectionMatrix();
 
     this.renderer.setSize(width, height);
-    this.renderer.setPixelRatio(1.0);
+    const dpr = window.innerWidth < 768 ? 1.0 : Math.min(window.devicePixelRatio || 1.0, 1.5);
+    this.renderer.setPixelRatio(dpr);
   }
 
   animate() {
@@ -295,20 +298,17 @@ class DeveloperCyberMatrix {
     const delta = Math.min(this.clock.getDelta(), 0.06);
     const time = this.clock.getElapsedTime();
 
-    // Mouse Lerp on tilt group
+    // Smooth Lerp on Mouse Tilt
     this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.08;
     this.mouse.y += (this.mouse.targetY - this.mouse.y) * 0.08;
 
-    this.tiltGroup.rotation.y = this.mouse.x;
-    this.tiltGroup.rotation.x = -this.mouse.y;
+    // Smooth Lerp on User Drag Rotation (Inertia damping)
+    this.dragRotation.x += (this.dragRotation.targetX - this.dragRotation.x) * 0.08;
+    this.dragRotation.y += (this.dragRotation.targetY - this.dragRotation.y) * 0.08;
 
-    // Drag damping inertia
-    if (!this.isDragging) {
-      this.dragVelocity.x *= 0.94;
-      this.dragVelocity.y *= 0.94;
-      this.spinGroup.rotation.y += this.dragVelocity.x;
-      this.spinGroup.rotation.x += this.dragVelocity.y;
-    }
+    // Apply combined tilt + user drag to tiltGroup
+    this.tiltGroup.rotation.x = -this.mouse.y + this.dragRotation.x;
+    this.tiltGroup.rotation.y = this.mouse.x + this.dragRotation.y;
 
     // Pulse decay
     if (this.pulseEnergy > 0) {
@@ -318,26 +318,26 @@ class DeveloperCyberMatrix {
 
     const speedMult = 1.0 + this.pulseEnergy * 2.2;
 
-    // Continuous dynamic rotation
-    this.coreMesh.rotation.y += 0.3 * delta * speedMult;
-    this.coreMesh.rotation.x += 0.18 * delta * speedMult;
+    // Continuous dynamic rotation on components
+    this.coreMesh.rotation.y += 0.25 * delta * speedMult;
+    this.coreMesh.rotation.x += 0.12 * delta * speedMult;
 
-    this.innerMesh.rotation.y -= 0.45 * delta * speedMult;
-    this.cageMesh.rotation.y -= 0.2 * delta * speedMult;
-    this.ringPrimary.rotation.z += 0.25 * delta * speedMult;
-    this.ringSecondary.rotation.z -= 0.18 * delta * speedMult;
-    this.particles.rotation.y += 0.14 * delta * speedMult;
+    this.innerMesh.rotation.y -= 0.4 * delta * speedMult;
+    this.cageMesh.rotation.y -= 0.18 * delta * speedMult;
+    this.ringPrimary.rotation.z += 0.22 * delta * speedMult;
+    this.ringSecondary.rotation.z -= 0.16 * delta * speedMult;
+    this.particles.rotation.y += 0.12 * delta * speedMult;
 
     // Harmonic floating
-    this.spinGroup.position.y = Math.sin(time * 1.2) * 0.1;
+    this.spinGroup.position.y = Math.sin(time * 1.2) * 0.08;
 
     // Pulse expansion
-    const pulseScale = 1.0 + this.pulseEnergy * 0.15;
+    const pulseScale = 1.0 + this.pulseEnergy * 0.12;
     this.cageMesh.scale.set(pulseScale, pulseScale, pulseScale);
-    this.ringPrimary.scale.set(1.0 + this.pulseEnergy * 0.1, 1.0 + this.pulseEnergy * 0.1, 1.0 + this.pulseEnergy * 0.1);
+    this.ringPrimary.scale.set(1.0 + this.pulseEnergy * 0.08, 1.0 + this.pulseEnergy * 0.08, 1.0 + this.pulseEnergy * 0.08);
 
     if (this.greenLight) {
-      this.greenLight.intensity = 1.6 + this.pulseEnergy * 1.5;
+      this.greenLight.intensity = 1.5 + this.pulseEnergy * 1.5;
     }
 
     this.renderer.render(this.scene, this.camera);
