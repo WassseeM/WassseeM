@@ -17,9 +17,8 @@ class FlyingCodeMatrix {
       { text: "char*", isAccent: false },
       { text: "bool", isAccent: false },
       { text: "void", isAccent: true },
-      { text: "vector<int>", isAccent: true },
       { text: "int* ptr = &val;", isAccent: true },
-      { text: "nullptr", isAccent: false },
+      { text: "NULL", isAccent: false },
       { text: "{ }", isAccent: true },
       { text: "</>", isAccent: true },
       { text: "=>", isAccent: true },
@@ -27,14 +26,14 @@ class FlyingCodeMatrix {
       { text: "if (valid)", isAccent: false },
       { text: "for (int i=0; i<n; i++)", isAccent: false },
       { text: "while (active)", isAccent: false },
-      { text: "std::cout << \"AW\\n\";", isAccent: true },
-      { text: "#include <iostream>", isAccent: true },
+      { text: "printf(\"AW\\n\");", isAccent: true },
+      { text: "#include <stdio.h>", isAccent: true },
       { text: "async / await", isAccent: true },
       { text: "const ahmed = new Dev();", isAccent: true },
       { text: "0xDEADBEEF", isAccent: false },
       { text: "git push origin main", isAccent: false },
       { text: "npm run build", isAccent: false },
-      { text: "g++ -std=c++20", isAccent: false }
+      { text: "gcc -O3 main.c", isAccent: false }
     ];
 
     this.particles = [];
@@ -45,6 +44,10 @@ class FlyingCodeMatrix {
     this.isWarpMode = false;
     this.warpMultiplier = 1.0;
     this.isTabActive = true;
+
+    // Device-aware frame cap (30fps mobile / 60fps desktop)
+    this.isMobile = window.innerWidth < 768;
+    this.targetInterval = this.isMobile ? 1000 / 30 : 1000 / 60;
     this.lastTime = performance.now();
 
     this.init();
@@ -95,8 +98,8 @@ class FlyingCodeMatrix {
 
   createParticles() {
     this.particles = [];
-    // Ultra-lightweight count on mobile (16) vs desktop (42) for locked 60-120fps
-    const count = this.width < 768 ? 16 : 42;
+    // Ultra-lightweight count on mobile (12) vs desktop (42) for locked smooth fps
+    const count = this.width < 768 ? 12 : 42;
 
     for (let i = 0; i < count; i++) {
       const snippet = this.snippets[i % this.snippets.length];
@@ -115,6 +118,12 @@ class FlyingCodeMatrix {
 
   render(currentTime) {
     if (!this.isTabActive) return;
+
+    // Frame limiter: skip draws to keep mobile GPU/battery cool
+    if (currentTime - this.lastTime < this.targetInterval - 1) {
+      requestAnimationFrame((t) => this.render(t));
+      return;
+    }
 
     const dt = Math.min((currentTime - this.lastTime) / 1000, 0.08);
     this.lastTime = currentTime;

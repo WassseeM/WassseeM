@@ -48,17 +48,18 @@ class PortfolioApp {
 
     // Code Snippets for Playground
     this.codeSnippets = {
-      cpp: [
-        { num: "01", html: '<span class="code-token-comment">// AhmedWaseem.cpp — Core Systems & DSA</span>' },
-        { num: "02", html: '<span class="code-token-kw">#include</span> <span class="code-token-str">&lt;iostream&gt;</span>' },
-        { num: "03", html: '<span class="code-token-kw">#include</span> <span class="code-token-str">&lt;vector&gt;</span>' },
-        { num: "04", html: '<span class="code-token-kw">class</span> SoftwareEngineer {' },
-        { num: "05", html: '  <span class="code-token-kw">public</span>:' },
-        { num: "06", html: '    std::string name = <span class="code-token-str">"Ahmed Waseem"</span>;' },
-        { num: "07", html: '    std::string focus = <span class="code-token-str">"Software Development"</span>;' },
-        { num: "08", html: '    <span class="code-token-kw">void</span> <span class="code-token-fn">solveProblem</span>() { <span class="code-token-comment">/* O(N log N) */</span> }' },
-        { num: "09", html: '};' },
-        { num: "10", html: '<span class="code-token-kw">int</span> <span class="code-token-fn">main</span>() { <span class="code-token-kw">return</span> 0; }' }
+      c: [
+        { num: "01", html: '<span class="code-token-comment">// AhmedWaseem.c — Systems &amp; Data Structures</span>' },
+        { num: "02", html: '<span class="code-token-kw">#include</span> <span class="code-token-str">&lt;stdio.h&gt;</span>' },
+        { num: "03", html: '<span class="code-token-kw">#include</span> <span class="code-token-str">&lt;stdlib.h&gt;</span>' },
+        { num: "04", html: '<span class="code-token-kw">typedef struct</span> {' },
+        { num: "05", html: '  <span class="code-token-kw">char</span> name[20];' },
+        { num: "06", html: '  <span class="code-token-kw">char</span> role[30];' },
+        { num: "07", html: '} <span class="code-token-fn">Developer</span>;' },
+        { num: "08", html: '<span class="code-token-kw">int</span> <span class="code-token-fn">main</span>(<span class="code-token-kw">void</span>) {' },
+        { num: "09", html: '  <span class="code-token-fn">printf</span>(<span class="code-token-str">"Ahmed Waseem: Software Builder\\n"</span>);' },
+        { num: "10", html: '  <span class="code-token-kw">return</span> 0;' },
+        { num: "11", html: '}' }
       ],
       js: [
         { num: "01", html: '<span class="code-token-comment">// AhmedWaseem.js — Modern Frontend Architecture</span>' },
@@ -92,6 +93,7 @@ class PortfolioApp {
     this.initMobileNav();
     this.initScrollSpy();
     this.initScrollReveal();
+    this.initScrollEffects();
     this.initCodePlayground();
     this.init3DCardTilt();
     this.initSkillsInspector();
@@ -223,18 +225,88 @@ class PortfolioApp {
     }, { passive: true });
   }
 
-  // 5. Scroll Reveal Observer
+  // 5. Scroll Reveal & Slide Observer
   initScrollReveal() {
-    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    const elements = document.querySelectorAll(
+      '.reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale, .stagger-children'
+    );
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        el.classList.add('is-visible');
+
+        // Staggered children: apply per-item delay, then clear it so hover
+        // transitions stay snappy afterwards.
+        if (el.classList.contains('stagger-children')) {
+          const children = el.children;
+          for (let i = 0; i < children.length; i++) {
+            const child = children[i];
+            const delay = i * 65;
+            child.style.transitionDelay = `${delay}ms`;
+            setTimeout(() => { child.style.transitionDelay = ''; }, delay + 900);
+          }
         }
+
+        observer.unobserve(el);
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
-    revealElements.forEach(el => observer.observe(el));
+    elements.forEach(el => observer.observe(el));
+  }
+
+  // 5b. Scroll Effects: progress bar, navbar shrink, hero parallax
+  initScrollEffects() {
+    const progress = document.getElementById('scroll-progress');
+    const navbar = document.getElementById('navbar');
+    const hero3d = document.getElementById('hero-3d-wrapper');
+    const heroContent = document.querySelector('.hero-content');
+    const enableParallax = window.innerWidth >= 768;
+
+    let ticking = false;
+
+    const update = () => {
+      ticking = false;
+      const y = window.scrollY || window.pageYOffset || 0;
+
+      // Top progress bar
+      if (progress) {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = max > 0 ? Math.min((y / max) * 100, 100) : 0;
+        progress.style.width = `${pct}%`;
+      }
+
+      // Navbar condensed state
+      if (navbar) navbar.classList.toggle('scrolled', y > 20);
+
+      // Hero parallax (desktop only, GPU transform + opacity)
+      if (enableParallax) {
+        const h = window.innerHeight;
+        if (y < h) {
+          if (hero3d) hero3d.style.transform = `translateY(${y * 0.18}px)`;
+          if (heroContent) {
+            heroContent.style.transform = `translateY(${y * 0.05}px)`;
+            heroContent.style.opacity = `${Math.max(0, 1 - (y / (h * 0.9)))}`;
+          }
+        } else if (hero3d && hero3d.style.transform) {
+          hero3d.style.transform = '';
+          if (heroContent) {
+            heroContent.style.transform = '';
+            heroContent.style.opacity = '';
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    }, { passive: true });
+
+    update();
   }
 
   // 6. Interactive Code Playground Window
@@ -255,7 +327,7 @@ class PortfolioApp {
       `).join('');
     };
 
-    renderSnippet('cpp');
+    renderSnippet('c');
 
     tabBtns.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -269,7 +341,7 @@ class PortfolioApp {
     if (copyBtn) {
       copyBtn.addEventListener('click', () => {
         const activeBtn = document.querySelector('.code-tab-btn.active');
-        const lang = activeBtn ? activeBtn.getAttribute('data-lang') : 'cpp';
+        const lang = activeBtn ? activeBtn.getAttribute('data-lang') : 'c';
         const lines = this.codeSnippets[lang] || [];
         const plainText = lines.map(l => l.html.replace(/<[^>]*>?/gm, '')).join('\n');
 

@@ -79,7 +79,7 @@ class TerminalContactSystem {
         break;
 
       case 'skills':
-        this.printLine('', 'CORE: C, C++, Java, Python, SQL');
+        this.printLine('', 'CORE: C, Java, Python, SQL');
         this.printLine('', 'WEB: HTML5, CSS3, JavaScript, Supabase');
         this.printLine('', 'TOOLS & CLOUD: Git, GitHub, Vercel, Netlify, Render, Canva');
         break;

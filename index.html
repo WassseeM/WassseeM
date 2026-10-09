@@ -23,10 +23,13 @@
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/responsive.css">
 
-  <!-- Three.js CDN for 3D Developer Crystal Core -->
+  <!-- Three.js CDN for 3D Glowing Code Sphere -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
+
+  <!-- Scroll progress indicator -->
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
   <!-- ==========================================================================
        FLYING CODE BACKGROUND CANVAS & AMBIENT VIGNETTE
@@ -146,9 +149,9 @@
           </div>
         </div>
 
-        <!-- Right Column: 3D Cyber Matrix Artifact (Bigger Size, Zero Lag) -->
+        <!-- Right Column: 3D Glowing Code Sphere (Device-Aware Performance) -->
         <div class="hero-3d-wrapper" id="hero-3d-wrapper">
-          <canvas id="hero-3d-canvas" aria-label="Interactive 3D Cyber Matrix"></canvas>
+          <canvas id="hero-3d-canvas" aria-label="Interactive 3D Glowing Code Sphere"></canvas>
           <div class="canvas-hint">Drag to rotate • Click to pulse</div>
         </div>
       </div>
@@ -172,7 +175,7 @@
 
       <div class="about-split-layout">
         <!-- Left: 3 Value Pillars -->
-        <div class="about-cards-col">
+        <div class="about-cards-col stagger-children">
           <div class="about-card">
             <span class="about-card-index">01</span>
             <h3 class="about-card-title">Software Development</h3>
@@ -193,16 +196,16 @@
             <span class="about-card-index">03</span>
             <h3 class="about-card-title">Problem Solving</h3>
             <p class="about-card-text">
-              Approaching challenges analytically through deep understanding of Data Structures and Algorithms in C++, Java, and Python.
+              Approaching challenges analytically through deep understanding of Data Structures and Algorithms in C, Java, and Python.
             </p>
           </div>
         </div>
 
         <!-- Right: Interactive Code Playground Window -->
-        <div class="code-window">
+        <div class="code-window reveal-right">
           <div class="code-window-header">
             <div class="code-window-tabs">
-              <button class="code-tab-btn active" data-lang="cpp">AhmedWaseem.cpp</button>
+              <button class="code-tab-btn active" data-lang="c">AhmedWaseem.c</button>
               <button class="code-tab-btn" data-lang="js">AhmedWaseem.js</button>
               <button class="code-tab-btn" data-lang="py">AhmedWaseem.py</button>
             </div>
@@ -234,11 +237,11 @@
       <div class="skills-filter-nav" id="skills-filter-nav" role="tablist" aria-label="Filter skills by category">
         <button class="skill-filter-btn active" data-filter="all" role="tab" aria-selected="true">
           <span>All Stack</span>
-          <span class="filter-count">19</span>
+          <span class="filter-count">18</span>
         </button>
         <button class="skill-filter-btn" data-filter="lang" role="tab" aria-selected="false">
           <span>Languages</span>
-          <span class="filter-count">6</span>
+          <span class="filter-count">5</span>
         </button>
         <button class="skill-filter-btn" data-filter="frontend" role="tab" aria-selected="false">
           <span>Frontend &amp; Web</span>
@@ -259,7 +262,7 @@
       </div>
 
       <!-- Real Logos & Shadow Icons Grid (Clean, Spacious Modern Badges) -->
-      <div class="skills-name-grid" id="skills-name-grid">
+      <div class="skills-name-grid stagger-children" id="skills-name-grid">
 
         <!-- 1. C -->
         <div class="skill-name-pill active" data-skill="C" data-category="lang" data-color="#659AD2" data-glow="rgba(0, 89, 156, 0.55)" data-desc="Low-level memory management, pointer arithmetic, data structures, and systems programming fundamentals." style="--brand-color: #659AD2; --brand-shadow: rgba(0, 89, 156, 0.55);">
@@ -274,22 +277,7 @@
           <span class="skill-title">C</span>
         </div>
 
-        <!-- 2. C++ -->
-        <div class="skill-name-pill" data-skill="C++" data-category="lang" data-color="#00599C" data-glow="rgba(0, 89, 156, 0.55)" data-desc="Object-oriented architecture, STL algorithms, competitive programming, and high-performance computation." style="--brand-color: #00599C; --brand-shadow: rgba(0, 89, 156, 0.55);">
-          <div class="skill-logo-wrap">
-            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="C++ Logo">
-              <path d="M64 8L114.7 37.3V95.7L64 125L13.3 95.7V37.3L64 8Z" fill="#00599C"/>
-              <path d="M64 16.5L106.3 41.2V90.8L64 115.5L21.7 90.8V41.2L64 16.5Z" fill="#659AD2"/>
-              <path d="M64 24.5L98 44.5V87.5L64 107.5L30 87.5V44.5L64 24.5Z" fill="#004482"/>
-              <path d="M52 36C38 36 27 47 27 61C27 75 38 86 52 86C60 86 67.5 82.5 72.5 76.5L64 70C60.8 73.5 56.8 75.5 52 75.5C44 75.5 37.5 69 37.5 61C37.5 53 44 46.5 52 46.5C56.8 46.5 60.8 48.5 64 52L72.5 45.5C67.5 39.5 60 36 52 36Z" fill="#FFFFFF"/>
-              <path d="M78 58H83V53H88V58H93V63H88V68H83V63H78V58Z" fill="#00FF88"/>
-              <path d="M96 58H101V53H106V58H111V63H106V68H101V63H96V58Z" fill="#00FF88"/>
-            </svg>
-          </div>
-          <span class="skill-title">C++</span>
-        </div>
-
-        <!-- 3. Java -->
+        <!-- 2. Java -->
         <div class="skill-name-pill" data-skill="Java" data-category="lang" data-color="#EA2D2E" data-glow="rgba(234, 45, 46, 0.5)" data-desc="Enterprise OOP patterns, JVM architecture, modular software design, and multithreaded backend logic." style="--brand-color: #EA2D2E; --brand-shadow: rgba(234, 45, 46, 0.5);">
           <div class="skill-logo-wrap">
             <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Java Logo">
@@ -519,7 +507,7 @@
       </div>
 
       <!-- Enhanced Technical Insight Inspector Bar -->
-      <div class="skill-inspector-bar" id="skill-inspector-bar">
+      <div class="skill-inspector-bar reveal-on-scroll" id="skill-inspector-bar">
         <div class="inspector-icon-box" id="inspector-icon-box">
           <!-- Populated dynamically via JS -->
           <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -559,7 +547,7 @@
       <div class="featured-project-card">
         <div class="featured-project-layout">
           <!-- Left: Details -->
-          <div class="featured-project-content">
+          <div class="featured-project-content reveal-left">
             <div class="project-badge-row">
               <span class="project-status-live">
                 <span class="live-pulse-dot"></span>
@@ -611,7 +599,7 @@
           </div>
 
           <!-- Right: Interactive Live Browser Preview Frame -->
-          <div class="featured-project-preview">
+          <div class="featured-project-preview reveal-right">
             <a href="https://neww-eight-nu.vercel.app/" target="_blank" rel="noopener noreferrer" class="preview-browser-frame" title="Click to visit live website">
               <div class="preview-browser-header">
                 <div class="browser-dots">
@@ -655,7 +643,7 @@
         </p>
       </div>
 
-      <div class="achievements-grid">
+      <div class="achievements-grid stagger-children">
         <!-- Item 1 -->
         <div class="achievement-card">
           <div class="achievement-icon-box">01</div>
@@ -687,7 +675,7 @@
             <span class="achievement-tag">Problem Solving</span>
             <h3 class="achievement-title">100+ Coding Problems Solved</h3>
             <p class="achievement-desc">
-              Practiced and solved algorithmic challenges across C++, Python, and Java on competitive coding platforms.
+              Practiced and solved algorithmic challenges across C, Python, and Java on competitive coding platforms.
             </p>
           </div>
         </div>
@@ -720,7 +708,7 @@
 
       <div class="contact-layout">
         <!-- Left: Channels -->
-        <div class="contact-info">
+        <div class="contact-info reveal-left">
           <div class="contact-headline">
             Ready to start a conversation or collaborate on a project?
           </div>

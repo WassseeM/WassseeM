@@ -122,14 +122,15 @@
   }
 
   .skills-name-grid {
-    grid-template-columns: repeat(auto-fill, minmax(138px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
   }
 
   .skill-name-pill {
-    padding: 8px 12px 8px 10px;
-    gap: 10px;
-    border-radius: 12px;
+    padding: 10px 14px 10px 11px;
+    gap: 11px;
+    border-radius: 13px;
+    min-height: auto;
   }
 
   .skill-logo-wrap {
@@ -193,3 +194,63 @@
     justify-content: center;
   }
 }
+
+/* ==========================================================================
+   MOBILE PERFORMANCE PASS
+   The #1 cause of phone jank here is `backdrop-filter` (the browser has to
+   re-blur the animating background canvas every frame). Disable it on
+   touch/small screens and swap in cheap solid backgrounds instead.
+   ========================================================================== */
+@media (max-width: 768px) {
+  .site-navbar,
+  .mobile-menu-drawer,
+  .skill-filter-btn,
+  .skill-name-pill,
+  .skill-inspector-bar,
+  .cmd-palette-backdrop {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .site-navbar { background: rgba(4, 4, 6, 0.96); }
+  .mobile-menu-drawer { background: #040406; }
+  .skill-filter-btn { background: rgba(18, 18, 26, 0.96); }
+  .skill-name-pill { background: rgba(13, 13, 19, 0.96); }
+  .skill-inspector-bar { background: rgba(14, 14, 22, 0.97); }
+  .cmd-palette-backdrop { background: rgba(4, 4, 6, 0.95); }
+
+  /* Cheaper SVG glow filters on the many skill logos */
+  .skill-logo-svg,
+  .inspector-icon-box .skill-logo-svg {
+    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.7));
+  }
+
+  /* The hero canvas is composited by WebGL; no need to force a layer */
+  #hero-3d-canvas {
+    will-change: auto;
+  }
+}
+
+/* Respect users who prefer reduced motion (also lighter on low-end phones) */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  .brand-dot-indicator,
+  .nav-status-dot,
+  .live-pulse-dot,
+  .typewriter-cursor,
+  .footer-code-anim {
+    animation: none !important;
+  }
+
+  .reveal-on-scroll,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale,
+  .stagger-children > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+

@@ -5,7 +5,7 @@
 I'm a Computer Science student passionate about programming, problem-solving and building useful projects.
 
 - 🎓 Currently pursuing B.Tech in Computer Science Engineering
-- 💻 Learning C, C++, Java, Python & SQL
+- 💻 Learning C, Java, Python & SQL
 - 🚀 Interested in Software Development
 - 📚 Always learning something new
 - ⚡ Turning ideas into code
@@ -39,8 +39,6 @@ I'm a Computer Science student passionate about programming, problem-solving and
 <p align="left">
 
 <img src="https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white"/>
-
-<img src="https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white"/>
 
 <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white"/>
 

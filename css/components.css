@@ -21,6 +21,26 @@
   transition: all var(--transition-base);
 }
 
+.site-navbar.scrolled {
+  background: rgba(4, 4, 6, 0.92);
+  border-bottom-color: rgba(0, 255, 136, 0.18);
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.6);
+}
+
+/* Scroll Progress Bar (top "page sliding" indicator) */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  z-index: 200;
+  pointer-events: none;
+  background: linear-gradient(90deg, #00ff88 0%, #7dffc4 60%, #ffffff 100%);
+  box-shadow: 0 0 12px var(--accent-green-glow);
+  transition: width 0.1s linear;
+}
+
 .nav-container {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -693,19 +713,20 @@
 
 .skills-name-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+  gap: 16px;
 }
 
 .skill-name-pill {
   display: flex;
   align-items: center;
-  gap: 13px;
+  gap: 14px;
   background: rgba(13, 13, 19, 0.75);
   backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 10px 18px 10px 12px;
-  border-radius: 14px;
+  padding: 12px 20px 12px 13px;
+  border-radius: 16px;
+  min-height: 70px;
   transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
               background 0.25s ease,
               border-color 0.25s ease,

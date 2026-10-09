@@ -1,13 +1,16 @@
 /* ==========================================================================
-   THREE.JS 3D CYBER MATRIX ARTIFACT (ULTRA-SMOOTH MOBILE & HIGH PERFORMANCE)
-   Engineered with smooth geodesic geometry, dual-directional cyber lighting,
-   clamped pitch drag physics, and zero-flicker liquid reflections.
+   THREE.JS — GLOWING CODE SPHERE (DEVELOPER ARTIFACT)
+   A neon "code globe": floating syntax tokens orbit a glowing wireframe
+   planet core. Built with pure emissive materials (zero lights) and
+   auto-optimized per device for buttery-smooth mobile performance.
    ========================================================================== */
 
-class DeveloperCyberMatrix {
+class DeveloperCodeSphere {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
     if (!this.container || typeof THREE === 'undefined') return;
+
+    this.isMobile = window.innerWidth < 768;
 
     this.scene = null;
     this.camera = null;
@@ -18,13 +21,12 @@ class DeveloperCyberMatrix {
     this.spinGroup = null;
 
     // 3D Components
-    this.coreMesh = null;
-    this.innerMesh = null;
-    this.cageMesh = null;
-    this.ringPrimary = null;
-    this.ringSecondary = null;
-    this.particles = null;
-    this.greenLight = null;
+    this.coreGlow = null;
+    this.coreWire = null;
+    this.sphereMesh = null;
+    this.rings = [];
+    this.nodes = null;
+    this.tokens = [];
 
     // Physics & Interaction (Smooth lerp momentum)
     this.mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
@@ -35,7 +37,18 @@ class DeveloperCyberMatrix {
     this.isVisible = true;
     this.isTabActive = true;
 
+    // Frame limiter (30fps on mobile, 60fps desktop)
     this.clock = new THREE.Clock();
+    this.lastRender = 0;
+    this.targetInterval = this.isMobile ? 1000 / 30 : 1000 / 60;
+
+    // Floating syntax tokens for the code globe
+    this.tokenLabels = [
+      '</>', '{ }', '( )', '=>', '[ ]', ';', '&&', '||',
+      '0x1F', 'fn()', 'int', 'var', 'if', 'for', '++', '#',
+      'git', 'npm', 'py', 'js', 'null', 'void', 'async', 'await',
+      'return', 'class', 'new', '<div>', '0x00', '<='
+    ];
 
     this.init();
   }
@@ -46,128 +59,227 @@ class DeveloperCyberMatrix {
     const width = this.container.clientWidth || 500;
     const height = this.container.clientHeight || 520;
 
-    // Camera perspective
-    this.camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 40);
-    this.camera.position.set(0, 0, 6.1);
+    // Camera perspective (z is set by fitCamera so the artifact always fits)
+    this.camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 50);
+    this.fitRadius = 2.7;
+    this.fitCamera();
 
-    // Locked pixel ratio 1.0 on mobile to eliminate GPU thermal load and micro-stutter
-    const dpr = window.innerWidth < 768 ? 1.0 : Math.min(window.devicePixelRatio || 1.0, 1.5);
+    // Locked pixel ratio on mobile to eliminate GPU thermal load / micro-stutter
+    const dpr = this.isMobile ? 1.0 : Math.min(window.devicePixelRatio || 1.0, 1.5);
     this.renderer = new THREE.WebGLRenderer({
       canvas: document.getElementById('hero-3d-canvas'),
-      antialias: true,
+      antialias: !this.isMobile,
       alpha: true,
-      powerPreference: 'high-performance',
+      powerPreference: this.isMobile ? 'default' : 'high-performance',
       precision: 'mediump'
     });
     this.renderer.setSize(width, height);
     this.renderer.setPixelRatio(dpr);
 
-    this.setupLighting();
-    this.buildCyberMatrixGeometry();
-    this.bindEvents();
-    this.animate();
-  }
-
-  setupLighting() {
-    // 1. Soft Ambient Illumination
-    const ambient = new THREE.AmbientLight(0xffffff, 0.85);
-    this.scene.add(ambient);
-
-    // 2. Primary Key Light (Crisp White sheen from top-right)
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1.15);
-    keyLight.position.set(4.5, 6.0, 5.0);
-    this.scene.add(keyLight);
-
-    // 3. Electric Emerald Rim Light from behind-left (creates gorgeous cyber rim reflection)
-    const rimLight = new THREE.DirectionalLight(0x00ff88, 1.3);
-    rimLight.position.set(-5.0, 2.0, -3.5);
-    this.scene.add(rimLight);
-
-    // 4. Dynamic Point Light in front of the core for rich specular highlight
-    this.greenLight = new THREE.PointLight(0x00ff88, 1.5, 12);
-    this.greenLight.position.set(1.8, 1.5, 3.2);
-    this.scene.add(this.greenLight);
-  }
-
-  buildCyberMatrixGeometry() {
     this.tiltGroup = new THREE.Group();
     this.spinGroup = new THREE.Group();
     this.tiltGroup.add(this.spinGroup);
     this.scene.add(this.tiltGroup);
 
-    const isMobile = window.innerWidth < 768;
+    this.bindEvents();
 
-    // 1. Central Smooth Geodesic Dark Obsidian Core (Zero-flicker liquid cyber reflection)
-    const coreGeo = new THREE.IcosahedronGeometry(1.38, isMobile ? 1 : 2);
-    const coreMat = new THREE.MeshStandardMaterial({
-      color: 0x0d1017,
-      metalness: 0.88,
-      roughness: 0.22,
-      flatShading: false
-    });
-    this.coreMesh = new THREE.Mesh(coreGeo, coreMat);
-    this.spinGroup.add(this.coreMesh);
-
-    // 2. Inner Glowing Energy Octahedron Core
-    const innerGeo = new THREE.OctahedronGeometry(0.88, 0);
-    const innerMat = new THREE.MeshBasicMaterial({
-      color: 0x00ff88,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.75
-    });
-    this.innerMesh = new THREE.Mesh(innerGeo, innerMat);
-    this.spinGroup.add(this.innerMesh);
-
-    // 3. Outer Geodesic Wireframe Cage
-    const cageGeo = new THREE.IcosahedronGeometry(1.98, 0);
-    const edges = new THREE.EdgesGeometry(cageGeo);
-    const lineMat = new THREE.LineBasicMaterial({
-      color: 0x00ff88,
-      transparent: true,
-      opacity: 0.7
-    });
-    this.cageMesh = new THREE.LineSegments(edges, lineMat);
-    this.spinGroup.add(this.cageMesh);
-
-    // 4. Primary Orbital Gyroscope Ring (Electric Emerald)
-    const ring1Geo = new THREE.TorusGeometry(2.68, 0.02, 6, isMobile ? 30 : 48);
-    const ring1Mat = new THREE.MeshBasicMaterial({ color: 0x00ff88, transparent: true, opacity: 0.75 });
-    this.ringPrimary = new THREE.Mesh(ring1Geo, ring1Mat);
-    this.ringPrimary.rotation.x = Math.PI / 3;
-    this.spinGroup.add(this.ringPrimary);
-
-    // 5. Secondary Intersecting Gyroscope Ring (Platinum Light Silver)
-    const ring2Geo = new THREE.TorusGeometry(3.02, 0.015, 6, isMobile ? 30 : 48);
-    const ring2Mat = new THREE.MeshBasicMaterial({ color: 0xcbd5e1, transparent: true, opacity: 0.45 });
-    this.ringSecondary = new THREE.Mesh(ring2Geo, ring2Mat);
-    this.ringSecondary.rotation.y = Math.PI / 3.5;
-    this.spinGroup.add(this.ringSecondary);
-
-    // 6. Data Constellation (Orbiting Data Points)
-    const pCount = isMobile ? 18 : 32;
-    const pGeo = new THREE.BufferGeometry();
-    const pos = new Float32Array(pCount * 3);
-
-    for (let i = 0; i < pCount * 3; i += 3) {
-      const r = 2.4 + Math.random() * 0.9;
-      const th = Math.random() * Math.PI * 2;
-      const ph = Math.acos((Math.random() * 2) - 1);
-
-      pos[i] = r * Math.sin(ph) * Math.cos(th);
-      pos[i + 1] = r * Math.sin(ph) * Math.sin(th);
-      pos[i + 2] = r * Math.cos(ph);
+    // Wait for the mono font so the code tokens render crisp (with a safety timeout)
+    let started = false;
+    const start = () => {
+      if (started) return;
+      started = true;
+      this.buildScene();
+      this.animate();
+    };
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(start);
+      setTimeout(start, 1200);
+    } else {
+      start();
     }
+  }
 
-    pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    const pMat = new THREE.PointsMaterial({
+  // --- Pull the camera back just enough so the whole sphere always fits ------
+  fitCamera() {
+    if (!this.camera) return;
+    const halfFov = (this.camera.fov * Math.PI) / 180 / 2;
+    const half = this.fitRadius * 1.05;
+    const zVertical = half / Math.tan(halfFov);
+    const zHorizontal = half / (Math.tan(halfFov) * this.camera.aspect);
+    this.camera.position.set(0, 0, Math.max(zVertical, zHorizontal));
+  }
+
+  // --- Build a glowing text texture for a single code token -----------------
+  createCodeTexture(text, color) {
+    const dpr = 2;
+    const fontSize = 46;
+    const pad = 18;
+    const fontFamily = '"JetBrains Mono", monospace';
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    ctx.font = `700 ${fontSize}px ${fontFamily}`;
+    const textWidth = Math.ceil(ctx.measureText(text).width);
+
+    canvas.width = (textWidth + pad * 2) * dpr;
+    canvas.height = (fontSize + pad * 2) * dpr;
+
+    ctx.scale(dpr, dpr);
+    ctx.font = `700 ${fontSize}px ${fontFamily}`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    const cx = (textWidth + pad * 2) / 2;
+    const cy = (fontSize + pad * 2) / 2;
+
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 20;
+    ctx.fillStyle = color;
+    ctx.fillText(text, cx, cy);
+    ctx.fillText(text, cx, cy);
+
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.minFilter = THREE.LinearFilter;
+    tex.magFilter = THREE.LinearFilter;
+    tex.generateMipmaps = false;
+
+    return { tex, aspect: canvas.width / canvas.height };
+  }
+
+  buildScene() {
+    const isMobile = this.isMobile;
+
+    // 1. Glowing wireframe "code globe"
+    const sphereGeo = new THREE.SphereGeometry(
+      1.6,
+      isMobile ? 14 : 20,
+      isMobile ? 10 : 14
+    );
+    const globeGeo = new THREE.WireframeGeometry(sphereGeo);
+    const globeMat = new THREE.LineBasicMaterial({
       color: 0x00ff88,
-      size: 0.065,
       transparent: true,
-      opacity: 0.9
+      opacity: 0.26
     });
-    this.particles = new THREE.Points(pGeo, pMat);
-    this.spinGroup.add(this.particles);
+    this.sphereMesh = new THREE.LineSegments(globeGeo, globeMat);
+    this.spinGroup.add(this.sphereMesh);
+
+    // 2. Glowing energy core (soft additive shell + crisp wireframe)
+    const coreGeo = new THREE.IcosahedronGeometry(0.62, 1);
+    this.coreGlow = new THREE.Mesh(
+      coreGeo,
+      new THREE.MeshBasicMaterial({
+        color: 0x00ff88,
+        transparent: true,
+        opacity: 0.16,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending
+      })
+    );
+    this.spinGroup.add(this.coreGlow);
+
+    const coreEdges = new THREE.EdgesGeometry(coreGeo);
+    this.coreWire = new THREE.LineSegments(
+      coreEdges,
+      new THREE.LineBasicMaterial({
+        color: 0x00ff88,
+        transparent: true,
+        opacity: 0.85
+      })
+    );
+    this.spinGroup.add(this.coreWire);
+
+    // 3. Orbital gyroscope rings (emerald + platinum)
+    const ringDefs = [
+      { r: 2.3, t: 0.012, color: 0x00ff88, op: 0.5, rx: Math.PI / 3, ry: 0 },
+      { r: 2.55, t: 0.01, color: 0xcbd5e1, op: 0.28, rx: 0, ry: Math.PI / 3.5 }
+    ];
+    ringDefs.forEach(def => {
+      const g = new THREE.TorusGeometry(def.r, def.t, 6, isMobile ? 40 : 64);
+      const m = new THREE.MeshBasicMaterial({
+        color: def.color,
+        transparent: true,
+        opacity: def.op
+      });
+      const ring = new THREE.Mesh(g, m);
+      ring.rotation.x = def.rx;
+      ring.rotation.y = def.ry;
+      this.rings.push(ring);
+      this.spinGroup.add(ring);
+    });
+
+    // 4. Orbiting data nodes (binary dust on the globe shell)
+    const nodeCount = isMobile ? 22 : 60;
+    const nodeGeo = new THREE.BufferGeometry();
+    const nodePos = new Float32Array(nodeCount * 3);
+    for (let i = 0; i < nodeCount; i++) {
+      const r = 1.9 + Math.random() * 0.4;
+      const th = Math.random() * Math.PI * 2;
+      const ph = Math.acos(Math.random() * 2 - 1);
+      nodePos[i * 3] = r * Math.sin(ph) * Math.cos(th);
+      nodePos[i * 3 + 1] = r * Math.cos(ph);
+      nodePos[i * 3 + 2] = r * Math.sin(ph) * Math.sin(th);
+    }
+    nodeGeo.setAttribute('position', new THREE.BufferAttribute(nodePos, 3));
+    this.nodes = new THREE.Points(
+      nodeGeo,
+      new THREE.PointsMaterial({
+        color: 0x00ff88,
+        size: isMobile ? 0.07 : 0.06,
+        transparent: true,
+        opacity: 0.85,
+        depthWrite: false
+      })
+    );
+    this.spinGroup.add(this.nodes);
+
+    // 5. Floating code tokens around the globe (Fibonacci sphere distribution)
+    const labels = isMobile
+      ? this.tokenLabels.filter((_, i) => i % 2 === 0)
+      : this.tokenLabels;
+    const count = labels.length;
+    const tokenH = isMobile ? 0.3 : 0.36;
+    const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+
+    for (let i = 0; i < count; i++) {
+      const text = labels[i];
+      const isAccent = i % 3 === 0;
+      const color = isAccent ? '#00ff88' : '#e2e8f0';
+      const { tex, aspect } = this.createCodeTexture(text, color);
+
+      const material = new THREE.SpriteMaterial({
+        map: tex,
+        transparent: true,
+        opacity: isAccent ? 0.95 : 0.7,
+        depthWrite: false,
+        blending: isAccent ? THREE.AdditiveBlending : THREE.NormalBlending
+      });
+      const sprite = new THREE.Sprite(material);
+
+      const h = tokenH * (0.85 + Math.random() * 0.4);
+      sprite.scale.set(h * aspect, h, 1);
+
+      // Even spherical distribution
+      const y = 1 - (i / Math.max(count - 1, 1)) * 2;
+      const radius = Math.sqrt(Math.max(0, 1 - y * y));
+      const theta = i * goldenAngle;
+      const dirX = Math.cos(theta) * radius;
+      const dirZ = Math.sin(theta) * radius;
+
+      const baseR = 1.95 + Math.random() * 0.35;
+      sprite.position.set(dirX * baseR, y * baseR, dirZ * baseR);
+      this.spinGroup.add(sprite);
+
+      this.tokens.push({
+        sprite,
+        dirX,
+        dirY: y,
+        dirZ,
+        baseR,
+        phase: Math.random() * Math.PI * 2,
+        bobAmp: 0.08 + Math.random() * 0.1
+      });
+    }
   }
 
   bindEvents() {
@@ -205,7 +317,7 @@ class DeveloperCyberMatrix {
       }
     });
 
-    // Touch Support for Mobile (Butter-smooth horizontal drag + instant vertical page scrolling)
+    // Touch Support for Mobile (horizontal drag rotate + vertical page scroll)
     let touchStartX = 0;
     let touchStartY = 0;
     let isTouchScroll = false;
@@ -228,7 +340,7 @@ class DeveloperCyberMatrix {
       const totalDx = Math.abs(currentX - touchStartX);
       const totalDy = Math.abs(currentY - touchStartY);
 
-      // If user is scrolling vertically down the page, yield to browser scrolling immediately
+      // If user is scrolling vertically, yield to browser scrolling immediately
       if (!isTouchScroll && totalDy > totalDx && totalDy > 7) {
         isTouchScroll = true;
         this.isDragging = false;
@@ -240,7 +352,6 @@ class DeveloperCyberMatrix {
       const dx = currentX - this.prevTouch.x;
       const dy = currentY - this.prevTouch.y;
 
-      // Smooth horizontal rotation + clamped pitch on mobile touch
       this.dragRotation.targetY += dx * 0.008;
       this.dragRotation.targetX = Math.max(-0.65, Math.min(0.65, this.dragRotation.targetX + dy * 0.008));
 
@@ -257,11 +368,11 @@ class DeveloperCyberMatrix {
       if (isTouchScroll) return;
       this.pulseEnergy = 0.8;
       if (window.showToast) {
-        window.showToast("⚡ Ahmed Waseem: Cyber Matrix Pulse Active");
+        window.showToast("⚡ Ahmed Waseem: Code Sphere Pulse Active");
       }
     });
 
-    // IntersectionObserver (Sleeps when offscreen)
+    // IntersectionObserver (sleeps when offscreen)
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         this.isVisible = entry.isIntersecting;
@@ -284,9 +395,10 @@ class DeveloperCyberMatrix {
 
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
+    this.fitCamera();
 
     this.renderer.setSize(width, height);
-    const dpr = window.innerWidth < 768 ? 1.0 : Math.min(window.devicePixelRatio || 1.0, 1.5);
+    const dpr = this.isMobile ? 1.0 : Math.min(window.devicePixelRatio || 1.0, 1.5);
     this.renderer.setPixelRatio(dpr);
   }
 
@@ -294,6 +406,11 @@ class DeveloperCyberMatrix {
     requestAnimationFrame(() => this.animate());
 
     if (!this.isVisible || !this.isTabActive) return;
+
+    // Frame limiter: keeps mobile cool without visible stutter
+    const now = performance.now();
+    if (now - this.lastRender < this.targetInterval - 1) return;
+    this.lastRender = now;
 
     const delta = Math.min(this.clock.getDelta(), 0.06);
     const time = this.clock.getElapsedTime();
@@ -318,32 +435,41 @@ class DeveloperCyberMatrix {
 
     const speedMult = 1.0 + this.pulseEnergy * 2.2;
 
-    // Continuous dynamic rotation on components
-    this.coreMesh.rotation.y += 0.25 * delta * speedMult;
-    this.coreMesh.rotation.x += 0.12 * delta * speedMult;
+    // Continuous rotation
+    this.spinGroup.rotation.y += 0.12 * delta * speedMult;
+    this.sphereMesh.rotation.y -= 0.05 * delta * speedMult;
+    this.coreWire.rotation.y -= 0.3 * delta * speedMult;
+    this.coreWire.rotation.x += 0.16 * delta * speedMult;
+    this.coreGlow.rotation.copy(this.coreWire.rotation);
+    this.nodes.rotation.y += 0.1 * delta * speedMult;
 
-    this.innerMesh.rotation.y -= 0.4 * delta * speedMult;
-    this.cageMesh.rotation.y -= 0.18 * delta * speedMult;
-    this.ringPrimary.rotation.z += 0.22 * delta * speedMult;
-    this.ringSecondary.rotation.z -= 0.16 * delta * speedMult;
-    this.particles.rotation.y += 0.12 * delta * speedMult;
+    if (this.rings[0]) this.rings[0].rotation.z += 0.26 * delta * speedMult;
+    if (this.rings[1]) this.rings[1].rotation.z -= 0.18 * delta * speedMult;
+
+    // Floating code tokens bob along their radial axis
+    for (let i = 0; i < this.tokens.length; i++) {
+      const t = this.tokens[i];
+      const r = t.baseR + Math.sin(time * 1.4 + t.phase) * t.bobAmp;
+      t.sprite.position.set(t.dirX * r, t.dirY * r, t.dirZ * r);
+    }
 
     // Harmonic floating
-    this.spinGroup.position.y = Math.sin(time * 1.2) * 0.08;
+    this.spinGroup.position.y = Math.sin(time * 1.1) * 0.08;
 
-    // Pulse expansion
-    const pulseScale = 1.0 + this.pulseEnergy * 0.12;
-    this.cageMesh.scale.set(pulseScale, pulseScale, pulseScale);
-    this.ringPrimary.scale.set(1.0 + this.pulseEnergy * 0.08, 1.0 + this.pulseEnergy * 0.08, 1.0 + this.pulseEnergy * 0.08);
+    // Pulse expansion + core glow breathing
+    const pulseScale = 1.0 + this.pulseEnergy * 0.2;
+    this.coreGlow.scale.set(pulseScale, pulseScale, pulseScale);
+    this.coreGlow.material.opacity = 0.14 + Math.sin(time * 2) * 0.04 + this.pulseEnergy * 0.3;
 
-    if (this.greenLight) {
-      this.greenLight.intensity = 1.5 + this.pulseEnergy * 1.5;
-    }
+    this.rings.forEach(ring => {
+      const s = 1.0 + this.pulseEnergy * 0.08;
+      ring.scale.set(s, s, s);
+    });
 
     this.renderer.render(this.scene, this.camera);
   }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  new DeveloperCyberMatrix('hero-3d-wrapper');
+  new DeveloperCodeSphere('hero-3d-wrapper');
 });
