@@ -219,41 +219,385 @@
     </section>
 
     <!-- ==========================================================================
-         4. SKILLS SECTION: SKILL NAMES ONLY (CLEAN MODERN BADGES)
+         4. SKILLS SECTION: REAL LOGOS & SHADOW ICONS (INTERACTIVE TECH STACK)
          ========================================================================== -->
     <section class="section-wrapper reveal-on-scroll" id="skills">
       <div class="section-header">
         <span class="section-tag">Tech Stack</span>
-        <h2 class="section-title">Technical Skills</h2>
+        <h2 class="section-title">Technical Skills &amp; Arsenal</h2>
         <p class="section-description">
-          Languages, frameworks, database systems, and deployment platforms in my active development stack.
+          Modern languages, frontend frameworks, cloud platforms, and architecture systems in my daily development toolkit.
         </p>
       </div>
 
-      <!-- Clean Skill Names Grid (Interactive Inspector) -->
-      <div class="skills-name-grid" id="skills-name-grid">
-        <div class="skill-name-pill active" data-skill="C" data-desc="Low-level memory management, pointers, and systems programming fundamentals."><span class="skill-dot-prefix">●</span><span>C</span></div>
-        <div class="skill-name-pill" data-skill="C++" data-desc="Object-oriented programming, STL data structures, algorithms, and competitive problem solving."><span class="skill-dot-prefix">●</span><span>C++</span></div>
-        <div class="skill-name-pill" data-skill="Java" data-desc="Object-oriented architecture, modular backend logic, and CS foundational concepts."><span class="skill-dot-prefix">●</span><span>Java</span></div>
-        <div class="skill-name-pill" data-skill="Python" data-desc="Algorithmic problem solving, automation scripting, and logic implementation."><span class="skill-dot-prefix">●</span><span>Python</span></div>
-        <div class="skill-name-pill" data-skill="HTML5" data-desc="Semantic, accessible, and SEO-optimized markup structure."><span class="skill-dot-prefix">●</span><span>HTML5</span></div>
-        <div class="skill-name-pill" data-skill="CSS" data-desc="Modern layout architectures (Flexbox, Grid), responsive systems, and CSS custom properties."><span class="skill-dot-prefix">●</span><span>CSS</span></div>
-        <div class="skill-name-pill" data-skill="JavaScript" data-desc="Modern ES6+, asynchronous programming, DOM interactions, and 3D WebGL animations."><span class="skill-dot-prefix">●</span><span>JavaScript</span></div>
-        <div class="skill-name-pill" data-skill="SQL" data-desc="Relational schema design, querying, joins, aggregation, and database management."><span class="skill-dot-prefix">●</span><span>SQL</span></div>
-        <div class="skill-name-pill" data-skill="GitHub" data-desc="Version control, Git workflows, branching strategies, and CI/CD pipelines."><span class="skill-dot-prefix">●</span><span>GitHub</span></div>
-        <div class="skill-name-pill" data-skill="Vercel" data-desc="Lightning-fast edge deployment and continuous delivery for modern web apps."><span class="skill-dot-prefix">●</span><span>Vercel</span></div>
-        <div class="skill-name-pill" data-skill="Netlify" data-desc="Automated JAMstack hosting, serverless edge functions, and continuous builds."><span class="skill-dot-prefix">●</span><span>Netlify</span></div>
-        <div class="skill-name-pill" data-skill="Render" data-desc="Cloud application hosting, web service scaling, and backend deployments."><span class="skill-dot-prefix">●</span><span>Render</span></div>
-        <div class="skill-name-pill" data-skill="Supabase" data-desc="PostgreSQL backend, realtime subscriptions, authentication, and secure storage."><span class="skill-dot-prefix">●</span><span>Supabase</span></div>
-        <div class="skill-name-pill" data-skill="Canva" data-desc="UI/UX wireframing, layout prototyping, brand graphics, and asset design."><span class="skill-dot-prefix">●</span><span>Canva</span></div>
+      <!-- Category Filter Tabs -->
+      <div class="skills-filter-nav" id="skills-filter-nav" role="tablist" aria-label="Filter skills by category">
+        <button class="skill-filter-btn active" data-filter="all" role="tab" aria-selected="true">
+          <span>All Stack</span>
+          <span class="filter-count">19</span>
+        </button>
+        <button class="skill-filter-btn" data-filter="lang" role="tab" aria-selected="false">
+          <span>Languages</span>
+          <span class="filter-count">6</span>
+        </button>
+        <button class="skill-filter-btn" data-filter="frontend" role="tab" aria-selected="false">
+          <span>Frontend &amp; Web</span>
+          <span class="filter-count">5</span>
+        </button>
+        <button class="skill-filter-btn" data-filter="backend" role="tab" aria-selected="false">
+          <span>Databases &amp; Backend</span>
+          <span class="filter-count">2</span>
+        </button>
+        <button class="skill-filter-btn" data-filter="cloud" role="tab" aria-selected="false">
+          <span>Cloud &amp; DevOps</span>
+          <span class="filter-count">5</span>
+        </button>
+        <button class="skill-filter-btn" data-filter="design" role="tab" aria-selected="false">
+          <span>Design &amp; UI</span>
+          <span class="filter-count">1</span>
+        </button>
       </div>
 
-      <!-- Skill Technical Insight Inspector Bar -->
+      <!-- Real Logos & Shadow Icons Grid -->
+      <div class="skills-name-grid" id="skills-name-grid">
+
+        <!-- 1. C -->
+        <div class="skill-name-pill active" data-skill="C" data-category="lang" data-color="#659AD2" data-glow="rgba(0, 89, 156, 0.55)" data-desc="Low-level memory management, pointer arithmetic, data structures, and systems programming fundamentals." style="--brand-color: #659AD2; --brand-shadow: rgba(0, 89, 156, 0.55);">
+          <div class="skill-logo-wrap">
+            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="C Logo">
+              <path d="M64 8L114.7 37.3V95.7L64 125L13.3 95.7V37.3L64 8Z" fill="#00599C"/>
+              <path d="M64 16.5L106.3 41.2V90.8L64 115.5L21.7 90.8V41.2L64 16.5Z" fill="#659AD2"/>
+              <path d="M64 24.5L98 44.5V87.5L64 107.5L30 87.5V44.5L64 24.5Z" fill="#004482"/>
+              <path d="M64 36C48.5 36 36 48.5 36 64C36 79.5 48.5 92 64 92C72.8 92 80.6 87.9 85.7 81.6L75.9 75.1C72.4 79 68.4 81 64 81C54.6 81 47 73.4 47 64C47 54.6 54.6 47 64 47C68.4 47 72.4 49 75.9 52.9L85.7 46.4C80.6 40.1 72.8 36 64 36Z" fill="#FFFFFF"/>
+            </svg>
+          </div>
+          <div class="skill-info-wrap">
+            <span class="skill-title">C</span>
+            <span class="skill-cat-tag">Language</span>
+          </div>
+        </div>
+
+        <!-- 2. C++ -->
+        <div class="skill-name-pill" data-skill="C++" data-category="lang" data-color="#00599C" data-glow="rgba(0, 89, 156, 0.55)" data-desc="Object-oriented architecture, STL algorithms, competitive programming, and high-performance computation." style="--brand-color: #00599C; --brand-shadow: rgba(0, 89, 156, 0.55);">
+          <div class="skill-logo-wrap">
+            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="C++ Logo">
+              <path d="M64 8L114.7 37.3V95.7L64 125L13.3 95.7V37.3L64 8Z" fill="#00599C"/>
+              <path d="M64 16.5L106.3 41.2V90.8L64 115.5L21.7 90.8V41.2L64 16.5Z" fill="#659AD2"/>
+              <path d="M64 24.5L98 44.5V87.5L64 107.5L30 87.5V44.5L64 24.5Z" fill="#004482"/>
+              <path d="M52 36C38 36 27 47 27 61C27 75 38 86 52 86C60 86 67.5 82.5 72.5 76.5L64 70C60.8 73.5 56.8 75.5 52 75.5C44 75.5 37.5 69 37.5 61C37.5 53 44 46.5 52 46.5C56.8 46.5 60.8 48.5 64 52L72.5 45.5C67.5 39.5 60 36 52 36Z" fill="#FFFFFF"/>
+              <path d="M78 58H83V53H88V58H93V63H88V68H83V63H78V58Z" fill="#00FF88"/>
+              <path d="M96 58H101V53H106V58H111V63H106V68H101V63H96V58Z" fill="#00FF88"/>
+            </svg>
+          </div>
+          <div class="skill-info-wrap">
+            <span class="skill-title">C++</span>
+            <span class="skill-cat-tag">Language</span>
+          </div>
+        </div>
+
+        <!-- 3. Java -->
+        <div class="skill-name-pill" data-skill="Java" data-category="lang" data-color="#EA2D2E" data-glow="rgba(234, 45, 46, 0.5)" data-desc="Enterprise OOP patterns, JVM architecture, modular software design, and multithreaded backend logic." style="--brand-color: #EA2D2E; --brand-shadow: rgba(234, 45, 46, 0.5);">
+          <div class="skill-logo-wrap">
+            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Java Logo">
+              <path d="M47.7 94.4C56.1 95.2 67 95 76.2 91.1C78.8 90 81.4 92 79.7 94.4C73.5 103.1 57 105.3 45.2 99.9C43 98.9 45.5 94.1 47.7 94.4ZM44.4 81.3C51.3 82 60.3 81.8 67.8 78.5C69.9 77.6 72.1 79.2 70.7 81.2C65.6 88.4 52 90.2 42.3 85.7C40.5 84.9 42.5 80.9 44.4 81.3Z" fill="#5382A1"/>
+              <path d="M72.2 46.8C77.6 53 75.3 58.5 69.6 65C64.9 70.3 62.1 75.8 65.9 80.6C57.7 73.2 57.1 66.8 62.5 61.1C67.6 55.7 69.5 51.8 72.2 46.8Z" fill="#EA2D2E"/>
+              <path d="M57.9 33.7C62.2 38.6 60.4 43 55.8 48.2C52 52.4 49.8 56.8 52.8 60.6C46.3 54.7 45.8 49.6 50.1 45.1C54.2 40.8 55.7 37.7 57.9 33.7Z" fill="#F89820"/>
+              <path d="M84.5 77.2C86.4 78.2 88 79.7 88.8 81.6C91.3 87.3 86.2 93.1 75.9 97.2C77.7 95.7 79.2 93.9 80 91.9C82.1 86.9 78.5 82.3 70.9 78.3C78.3 78.6 82.5 78.2 84.5 77.2Z" fill="#5382A1"/>
+              <path d="M41.7 66.8C39.3 74 45.8 79.1 54.5 82.4C64.3 86.2 77.3 87.1 85.2 82.6C87.5 81.3 89.6 83.4 88.2 85.2C81.4 94 63.4 96 50.8 90.6C39.5 85.7 36.1 75.8 40 67.6C41 65.5 42.3 65.9 41.7 66.8Z" fill="#EA2D2E"/>
+              <path d="M32.8 107.5C48.4 109.9 72.3 110.1 90.1 103.9C94.8 102.3 98.9 106.1 95.3 109.3C82.8 120.5 47.8 122.1 27.9 113.8C23.9 112.1 26.5 107.1 32.8 107.5Z" fill="#5382A1"/>
+            </svg>
+          </div>
+          <div class="skill-info-wrap">
+            <span class="skill-title">Java</span>
+            <span class="skill-cat-tag">Language</span>
+          </div>
+        </div>
+
+        <!-- 4. Python -->
+        <div class="skill-name-pill" data-skill="Python" data-category="lang" data-color="#387EB8" data-glow="rgba(56, 126, 184, 0.55)" data-desc="Algorithmic problem solving, scripting, data manipulation, automation tools, and backend API integration." style="--brand-color: #387EB8; --brand-shadow: rgba(56, 126, 184, 0.55);">
+          <div class="skill-logo-wrap">
+            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Python Logo">
+              <path d="M63.6 8.5C36.2 8.5 37.9 20.4 37.9 20.4L37.93 32.7H64.13V36.4H28.43C8.53 36.4 8.53 63.8 8.53 63.8C8.53 91.2 25.83 90.2 25.83 90.2H36.13V75.7C36.13 75.7 35.53 63.4 48.23 63.4H74.03C74.03 63.4 85.53 63.2 85.53 52.1V22.7C85.53 22.7 87.23 8.5 63.63 8.5ZM49.4 16.8C51.7 16.8 53.6 18.7 53.6 21C53.6 23.3 51.7 25.2 49.4 25.2C47.1 25.2 45.2 23.3 45.2 21C45.2 18.7 47.1 16.8 49.4 16.8Z" fill="#387EB8"/>
+              <path d="M64.4 119.5C91.8 119.5 90.1 107.6 90.1 107.6L90.07 95.3H63.87V91.6H99.57C119.47 91.6 119.47 64.2 119.47 64.2C119.47 36.8 102.17 37.8 102.17 37.8H91.87V52.3C91.87 52.3 92.47 64.6 79.77 64.6H53.97C53.97 64.6 42.47 64.8 42.47 75.9V105.3C42.47 105.3 40.77 119.5 64.37 119.5ZM78.6 111.2C76.3 111.2 74.4 109.3 74.4 107C74.4 104.7 76.3 102.8 78.6 102.8C80.9 102.8 82.8 104.7 82.8 107C82.8 109.3 80.9 111.2 78.6 111.2Z" fill="#FFE873"/>
+            </svg>
+          </div>
+          <div class="skill-info-wrap">
+            <span class="skill-title">Python</span>
+            <span class="skill-cat-tag">Language</span>
+          </div>
+        </div>
+
+        <!-- 5. JavaScript -->
+        <div class="skill-name-pill" data-skill="JavaScript" data-category="lang" data-color="#F7DF1E" data-glow="rgba(247, 223, 30, 0.55)" data-desc="Modern ES6+, asynchronous architecture, Web APIs, DOM manipulation, 3D Canvas, and interactive state management." style="--brand-color: #F7DF1E; --brand-shadow: rgba(247, 223, 30, 0.55);">
+          <div class="skill-logo-wrap">
+            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="JavaScript Logo">
+              <rect width="128" height="128" rx="22" fill="#F7DF1E"/>
+              <path d="M37.3 103.5C42 106.3 47.6 108 52.8 108C61.7 108 67.6 103.5 67.6 92.5V47.2H52.4V92C52.4 96.8 50.4 98.9 46.7 98.9C43.5 98.9 40.6 97.2 38.6 95.7L37.3 103.5ZM74.1 102C78.9 105.4 86 107.8 93.4 107.8C105.3 107.8 113.2 101.7 113.2 91.1C113.2 81.3 106.4 76.7 97.6 72.7C91.3 69.8 87.7 67.4 87.7 63.2C87.7 59.6 90.5 56.7 95.9 56.7C100.5 56.7 104.7 58.5 107.6 60.4L110.8 50.8C107.2 48.6 101.9 47.2 95.9 47.2C83.1 47.2 76.8 54.8 76.8 63.6C76.8 72.8 83.3 77.7 91.8 81.6C98.4 84.6 102.2 86.9 102.2 91.5C102.2 95.7 98.4 98.4 92.6 98.4C86.3 98.4 80.8 95.8 77.3 93.2L74.1 102Z" fill="#000000"/>
+            </svg>
+          </div>
+          <div class="skill-info-wrap">
+            <span class="skill-title">JavaScript</span>
+            <span class="skill-cat-tag">Language / Web</span>
+          </div>
+        </div>
+
+        <!-- 6. TypeScript -->
+        <div class="skill-name-pill" data-skill="TypeScript" data-category="lang" data-color="#3178C6" data-glow="rgba(49, 120, 198, 0.55)" data-desc="Strong typing, generics, robust interfaces, refactoring safety, and enterprise application reliability." style="--brand-color: #3178C6; --brand-shadow: rgba(49, 120, 198, 0.55);">
+          <div class="skill-logo-wrap">
+            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="TypeScript Logo">
+              <rect width="128" height="128" rx="22" fill="#3178C6"/>
+              <path d="M28 46H60V55.5H46.5V96H35.5V55.5H28V46ZM68.5 81.8C72.7 85.6 78.4 87.6 84.1 87.6C92.9 87.6 98.6 83.4 98.6 76.4C98.6 69.6 93.8 66.6 87.4 63.9C82.9 62 80.4 60.5 80.4 57.7C80.4 55.3 82.4 53.5 86.2 53.5C89.4 53.5 92.4 54.7 94.4 56.1L96.8 48.9C94 47.4 90 46.4 85.8 46.4C76.8 46.4 71.6 51.5 71.6 58.2C71.6 64.4 76 67.8 82.4 70.5C87.2 72.5 89.9 74.1 89.9 77.1C89.9 79.9 87.3 81.7 83.1 81.7C78.6 81.7 74.9 79.9 72.5 77.9L68.5 81.8Z" fill="#FFFFFF"/>
+            </svg>
+          </div>
+          <div class="skill-info-wrap">
+            <span class="skill-title">TypeScript</span>
+            <span class="skill-cat-tag">Language / Web</span>
+          </div>
+        </div>
+
+        <!-- 7. React -->
+        <div class="skill-name-pill" data-skill="React" data-category="frontend" data-color="#61DAFB" data-glow="rgba(97, 218, 251, 0.55)" data-desc="Declarative component architecture, custom hooks, Virtual DOM optimization, and reactive user interfaces." style="--brand-color: #61DAFB; --brand-shadow: rgba(97, 218, 251, 0.55);">
+          <div class="skill-logo-wrap">
+            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="React Logo">
+              <ellipse cx="64" cy="64" rx="14" ry="14" fill="#61DAFB"/>
+              <g stroke="#61DAFB" stroke-width="6" fill="none">
+                <ellipse cx="64" cy="64" rx="48" ry="18"/>
+                <ellipse cx="64" cy="64" rx="48" ry="18" transform="rotate(60 64 64)"/>
+                <ellipse cx="64" cy="64" rx="48" ry="18" transform="rotate(120 64 64)"/>
+              </g>
+            </svg>
+          </div>
+          <div class="skill-info-wrap">
+            <span class="skill-title">React</span>
+            <span class="skill-cat-tag">Frontend</span>
+          </div>
+        </div>
+
+        <!-- 8. Next.js -->
+        <div class="skill-name-pill" data-skill="Next.js" data-category="frontend" data-color="#FFFFFF" data-glow="rgba(255, 255, 255, 0.45)" data-desc="Fullstack React framework, Server-Side Rendering (SSR), App Router, Edge API routes, and SEO optimization." style="--brand-color: #FFFFFF; --brand-shadow: rgba(255, 255, 255, 0.45);">
+          <div class="skill-logo-wrap">
+            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Next.js Logo">
+              <circle cx="64" cy="64" r="54" fill="#000000" stroke="#333333" stroke-width="4"/>
+              <path d="M42 42H52V86H42V42Z" fill="#FFFFFF"/>
+              <path d="M51 42L85.8 86.5H86V42H96V86H87.2L51 42Z" fill="url(#next-grad-main)"/>
+              <defs>
+                <linearGradient id="next-grad-main" x1="51" y1="42" x2="86" y2="86" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#FFFFFF"/>
+                  <stop offset="0.75" stop-color="#FFFFFF"/>
+                  <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div class="skill-info-wrap">
+            <span class="skill-title">Next.js</span>
+            <span class="skill-cat-tag">Frontend</span>
+          </div>
+        </div>
+
+        <!-- 9. HTML5 -->
+        <div class="skill-name-pill" data-skill="HTML5" data-category="frontend" data-color="#E44D26" data-glow="rgba(228, 77, 38, 0.55)" data-desc="Semantic document structure, accessible ARIA roles, modern multimedia elements, and SEO architecture." style="--brand-color: #E44D26; --brand-shadow: rgba(228, 77, 38, 0.55);">
+          <div class="skill-logo-wrap">
+            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="HTML5 Logo">
+              <path d="M19.4 114.7L8.8 8H119.2L108.6 114.7L64 128L19.4 114.7Z" fill="#E44D26"/>
+              <path d="M64 118.8L102.2 108.2L111.3 17.4H64V118.8Z" fill="#F16529"/>
+              <path d="M64 53.6H46.7L45.4 38.9H64V24.5H31.1L34.7 68H64V53.6ZM64 91.3L63.8 91.4L47.7 87.1L46.7 75.6H32.2L34.2 98.4L64 104.2V91.3Z" fill="#EBEBEB"/>
+              <path d="M64 53.6H81.3L79.7 71.8L64 76V90.9L91.8 83.2L95.4 39.1H64V53.6ZM64 24.5V38.9H96.9L98.1 24.5H64Z" fill="#FFFFFF"/>
+            </svg>
+          </div>
+          <div class="skill-info-wrap">
+            <span class="skill-title">HTML5</span>
+            <span class="skill-cat-tag">Frontend</span>
+          </div>
+        </div>
+
+        <!-- 10. CSS3 -->
+        <div class="skill-name-pill" data-skill="CSS3" data-category="frontend" data-color="#1572B6" data-glow="rgba(21, 114, 182, 0.55)" data-desc="Modern layout architectures (Flexbox, CSS Grid), custom properties, keyframe animations, and fluid typography." style="--brand-color: #1572B6; --brand-shadow: rgba(21, 114, 182, 0.55);">
+          <div class="skill-logo-wrap">
+            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="CSS3 Logo">
+              <path d="M19.4 114.7L8.8 8H119.2L108.6 114.7L64 128L19.4 114.7Z" fill="#1572B6"/>
+              <path d="M64 118.8L102.2 108.2L111.3 17.4H64V118.8Z" fill="#33A9DC"/>
+              <path d="M64 53.6H46.7L45.4 38.9H64V24.5H31.1L34.7 68H64V53.6ZM64 91.3L63.8 91.4L47.7 87.1L46.7 75.6H32.2L34.2 98.4L64 104.2V91.3Z" fill="#EBEBEB"/>
+              <path d="M64 53.6H95.9L94.8 65.9H64V80.3H78.5L77.1 95.6L64 99.1V114L89.2 107L92.8 66.6H64V53.6ZM64 24.5V38.9H96.9L98.1 24.5H64Z" fill="#FFFFFF"/>
+            </svg>
+          </div>
+          <div class="skill-info-wrap">
+            <span class="skill-title">CSS3</span>
+            <span class="skill-cat-tag">Frontend</span>
+          </div>
+        </div>
+
+        <!-- 11. Tailwind CSS -->
+        <div class="skill-name-pill" data-skill="Tailwind CSS" data-category="frontend" data-color="#38BDF8" data-glow="rgba(56, 189, 248, 0.55)" data-desc="Utility-first styling system, responsive breakpoints, dynamic component themes, and rapid UI engineering." style="--brand-color: #38BDF8; --brand-shadow: rgba(56, 189, 248, 0.55);">
+          <div class="skill-logo-wrap">
+            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Tailwind CSS Logo">
+              <path d="M64 34C52 34 44.5 40 41.5 52C46 46 51.3 43.8 57.3 45.2C60.8 46.1 63.2 48.6 66 51.3C70.4 55.7 75.8 61 88 61C100 61 107.5 55 110.5 43C106 49 100.7 51.2 94.7 49.8C91.2 48.9 88.8 46.4 86 43.7C81.6 39.3 76.2 34 64 34ZM40 61C28 61 20.5 67 17.5 79C22 73 27.3 70.8 33.3 72.2C36.8 73.1 39.2 75.6 42 78.3C46.4 82.7 51.8 88 64 88C76 88 83.5 82 86.5 70C82 76 76.7 78.2 70.7 76.8C67.2 75.9 64.8 73.4 62 70.7C57.6 66.3 52.2 61 40 61Z" fill="#38BDF8"/>
+            </svg>
+          </div>
+          <div class="skill-info-wrap">
+            <span class="skill-title">Tailwind CSS</span>
+            <span class="skill-cat-tag">Frontend</span>
+          </div>
+        </div>
+
+        <!-- 12. SQL -->
+        <div class="skill-name-pill" data-skill="SQL" data-category="backend" data-color="#00BCF2" data-glow="rgba(0, 188, 242, 0.55)" data-desc="Relational schema modeling, multi-table joins, subqueries, indexing optimization, and ACID transactions." style="--brand-color: #00BCF2; --brand-shadow: rgba(0, 188, 242, 0.55);">
+          <div class="skill-logo-wrap">
+            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="SQL Database Logo">
+              <defs>
+                <linearGradient id="sql-grad-db" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#00D2FF"/>
+                  <stop offset="100%" stop-color="#0066FF"/>
+                </linearGradient>
+              </defs>
+              <ellipse cx="64" cy="28" rx="46" ry="16" fill="url(#sql-grad-db)"/>
+              <ellipse cx="64" cy="28" rx="38" ry="11" fill="#FFFFFF" fill-opacity="0.35"/>
+              <path d="M18 28V54C18 62.8 38.6 70 64 70C89.4 70 110 62.8 110 54V28C104.2 34.7 86 39.5 64 39.5C42 39.5 23.8 34.7 18 28Z" fill="url(#sql-grad-db)"/>
+              <ellipse cx="64" cy="54" rx="46" ry="14" fill="#003399" fill-opacity="0.4"/>
+              <path d="M18 54V80C18 88.8 38.6 96 64 96C89.4 96 110 88.8 110 80V54C104.2 60.7 86 65.5 64 65.5C42 65.5 23.8 60.7 18 54Z" fill="url(#sql-grad-db)"/>
+              <ellipse cx="64" cy="80" rx="46" ry="14" fill="#003399" fill-opacity="0.4"/>
+              <path d="M18 80V102C18 110.8 38.6 118 64 118C89.4 118 110 110.8 110 102V80C104.2 86.7 86 91.5 64 91.5C42 91.5 23.8 86.7 18 80Z" fill="url(#sql-grad-db)"/>
+            </svg>
+          </div>
+          <div class="skill-info-wrap">
+            <span class="skill-title">SQL</span>
+            <span class="skill-cat-tag">Database</span>
+          </div>
+        </div>
+
+        <!-- 13. Supabase -->
+        <div class="skill-name-pill" data-skill="Supabase" data-category="backend" data-color="#3ECF8E" data-glow="rgba(62, 207, 142, 0.55)" data-desc="Managed PostgreSQL backend, row-level security (RLS), realtime database subscriptions, and auth workflows." style="--brand-color: #3ECF8E; --brand-shadow: rgba(62, 207, 142, 0.55);">
+          <div class="skill-logo-wrap">
+            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Supabase Logo">
+              <defs>
+                <linearGradient id="supa-main-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#3ECF8E"/>
+                  <stop offset="100%" stop-color="#249361"/>
+                </linearGradient>
+              </defs>
+              <path d="M69.7 122.7C67.3 125.7 62.3 124.4 61.7 120.5L48.2 49.3C47.6 45.5 51 42.3 54.8 43.2L103.2 54.4C107.3 55.4 108.2 60.7 104.7 63L69.7 122.7Z" fill="url(#supa-main-grad)"/>
+              <path d="M58.3 5.3C60.7 2.3 65.7 3.6 66.3 7.5L79.8 78.7C80.4 82.5 77 85.7 73.2 84.8L24.8 73.6C20.7 72.6 19.8 67.3 23.3 65L58.3 5.3Z" fill="#3ECF8E" fill-opacity="0.85"/>
+            </svg>
+          </div>
+          <div class="skill-info-wrap">
+            <span class="skill-title">Supabase</span>
+            <span class="skill-cat-tag">Backend / DB</span>
+          </div>
+        </div>
+
+        <!-- 14. Git -->
+        <div class="skill-name-pill" data-skill="Git" data-category="cloud" data-color="#F05032" data-glow="rgba(240, 80, 50, 0.55)" data-desc="Distributed version control, atomic commit strategies, rebase workflows, and collaborative branch management." style="--brand-color: #F05032; --brand-shadow: rgba(240, 80, 50, 0.55);">
+          <div class="skill-logo-wrap">
+            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Git Logo">
+              <path d="M120.3 57.5L70.5 7.7C66.9 4.1 61 4.1 57.4 7.7L44.8 20.3L61.3 36.8C65.1 35.5 69.6 36.4 72.6 39.4C75.6 42.4 76.5 46.9 75.2 50.7L91.1 66.6C94.9 65.3 99.4 66.2 102.4 69.2C106.6 73.4 106.6 80.2 102.4 84.4C98.2 88.6 91.4 88.6 87.2 84.4C83.9 81.1 83.1 76.2 84.9 72.2L69.5 56.8V86.7C71.4 87.8 73 89.5 74 91.6C77 97.9 74.3 105.5 68 108.5C61.7 111.5 54.1 108.8 51.1 102.5C48.8 97.7 49.5 92.1 52.8 88V57C50.9 55.9 49.3 54.2 48.3 52.1C46.2 47.7 46.7 42.6 49.5 38.7L33.4 22.6L7.7 48.3C4.1 51.9 4.1 57.8 7.7 61.4L57.5 111.2C61.1 114.8 67 114.8 70.6 111.2L120.3 61.5C123.9 57.8 123.9 51.9 120.3 57.5Z" fill="#F05032"/>
+            </svg>
+          </div>
+          <div class="skill-info-wrap">
+            <span class="skill-title">Git</span>
+            <span class="skill-cat-tag">DevOps</span>
+          </div>
+        </div>
+
+        <!-- 15. GitHub -->
+        <div class="skill-name-pill" data-skill="GitHub" data-category="cloud" data-color="#FFFFFF" data-glow="rgba(255, 255, 255, 0.45)" data-desc="Repository management, open-source collaboration, pull request reviews, and GitHub Actions CI/CD automation." style="--brand-color: #FFFFFF; --brand-shadow: rgba(255, 255, 255, 0.45);">
+          <div class="skill-logo-wrap">
+            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="GitHub Logo">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M64 8C32.8 8 7.5 33.3 7.5 64.5C7.5 89.4 23.7 110.5 46.1 118C48.9 118.5 50 116.8 50 115.3V104.9C34.3 108.3 31 98.2 31 98.2C28.4 91.7 24.7 90 24.7 90C19.6 86.5 25.1 86.6 25.1 86.6C30.8 87 33.8 92.4 33.8 92.4C38.8 101.1 47 98.6 50.2 97.1C50.7 93.5 52.2 90.9 53.8 89.5C41.3 88.1 28.1 83.2 28.1 61.5C28.1 55.3 30.3 50.3 33.9 46.3C33.3 44.9 31.4 39.1 34.5 31.3C34.5 31.3 39.2 29.8 50.1 37.1C54.6 35.8 59.5 35.2 64.3 35.2C69.1 35.2 74 35.8 78.5 37.1C89.3 29.8 94 31.3 94 31.3C97.1 39.1 95.2 44.9 94.6 46.3C98.2 50.3 100.4 55.3 100.4 61.5C100.4 83.3 87.2 88 74.6 89.4C76.6 91.2 78.5 94.6 78.5 99.9V115.5C78.5 117 79.5 118.8 82.4 118.2C104.8 110.7 121 89.6 121 64.5C120.5 33.3 95.2 8 64 8Z" fill="#FFFFFF"/>
+            </svg>
+          </div>
+          <div class="skill-info-wrap">
+            <span class="skill-title">GitHub</span>
+            <span class="skill-cat-tag">DevOps</span>
+          </div>
+        </div>
+
+        <!-- 16. Vercel -->
+        <div class="skill-name-pill" data-skill="Vercel" data-category="cloud" data-color="#FFFFFF" data-glow="rgba(255, 255, 255, 0.55)" data-desc="Lightning-fast edge delivery, serverless edge function execution, custom DNS, and instant continuous preview builds." style="--brand-color: #FFFFFF; --brand-shadow: rgba(255, 255, 255, 0.55);">
+          <div class="skill-logo-wrap">
+            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Vercel Logo">
+              <path d="M64 16L120 112H8L64 16Z" fill="#FFFFFF"/>
+            </svg>
+          </div>
+          <div class="skill-info-wrap">
+            <span class="skill-title">Vercel</span>
+            <span class="skill-cat-tag">Cloud</span>
+          </div>
+        </div>
+
+        <!-- 17. Netlify -->
+        <div class="skill-name-pill" data-skill="Netlify" data-category="cloud" data-color="#00C7B7" data-glow="rgba(0, 199, 183, 0.55)" data-desc="Automated JAMstack edge hosting, serverless functions, form processing, and continuous integration pipeline." style="--brand-color: #00C7B7; --brand-shadow: rgba(0, 199, 183, 0.55);">
+          <div class="skill-logo-wrap">
+            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Netlify Logo">
+              <path d="M67.8 10.5C65.8 8.5 62.5 8.5 60.5 10.5L38.4 32.6L70.5 64.7L102.6 32.6L67.8 10.5ZM105.6 55.4L83 78L100.5 95.5L120.3 75.7C122.3 73.7 122.3 70.4 120.3 68.4L105.6 55.4ZM22.4 55.4L7.7 68.4C5.7 70.4 5.7 73.7 7.7 75.7L27.5 95.5L45 78L22.4 55.4ZM60.2 100.3L38.4 122.1C40.4 124.1 43.7 124.1 45.7 122.1L70.4 97.4L60.6 87.6L38 110.2L60.2 100.3Z" fill="#00C7B7"/>
+              <path d="M64 56.4L44.8 75.6L64 94.8L83.2 75.6L64 56.4Z" fill="#24C1B7"/>
+            </svg>
+          </div>
+          <div class="skill-info-wrap">
+            <span class="skill-title">Netlify</span>
+            <span class="skill-cat-tag">Cloud</span>
+          </div>
+        </div>
+
+        <!-- 18. Render -->
+        <div class="skill-name-pill" data-skill="Render" data-category="cloud" data-color="#46E3B7" data-glow="rgba(70, 227, 183, 0.55)" data-desc="Cloud application deployment, container hosting, managed web services, SSL provisioning, and background workers." style="--brand-color: #46E3B7; --brand-shadow: rgba(70, 227, 183, 0.55);">
+          <div class="skill-logo-wrap">
+            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Render Logo">
+              <rect width="128" height="128" rx="28" fill="#050508" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+              <path d="M34 32H68C85.7 32 100 46.3 100 64C100 81.7 85.7 96 68 96H34V32ZM54 50V78H68C75.7 78 82 71.7 82 64C82 56.3 75.7 50 68 50H54Z" fill="#46E3B7"/>
+            </svg>
+          </div>
+          <div class="skill-info-wrap">
+            <span class="skill-title">Render</span>
+            <span class="skill-cat-tag">Cloud</span>
+          </div>
+        </div>
+
+        <!-- 19. Canva -->
+        <div class="skill-name-pill" data-skill="Canva" data-category="design" data-color="#7D2AE8" data-glow="rgba(125, 42, 232, 0.55)" data-desc="UI/UX wireframing, layout prototyping, brand visual assets, vectors, and design system presentation." style="--brand-color: #7D2AE8; --brand-shadow: rgba(125, 42, 232, 0.55);">
+          <div class="skill-logo-wrap">
+            <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Canva Logo">
+              <defs>
+                <linearGradient id="canva-main-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#00C4CC"/>
+                  <stop offset="50%" stop-color="#3B82F6"/>
+                  <stop offset="100%" stop-color="#7D2AE8"/>
+                </linearGradient>
+              </defs>
+              <circle cx="64" cy="64" r="56" fill="url(#canva-main-grad)"/>
+              <path d="M64 34C47.4 34 34 47.4 34 64C34 80.6 47.4 94 64 94C73.2 94 81.5 89.9 87 83.4L77.4 76.2C73.9 80.5 69.2 83 64 83C53.5 83 45 74.5 45 64C45 53.5 53.5 45 64 45C69.2 45 73.9 47.5 77.4 51.8L87 44.6C81.5 38.1 73.2 34 64 34Z" fill="#FFFFFF"/>
+            </svg>
+          </div>
+          <div class="skill-info-wrap">
+            <span class="skill-title">Canva</span>
+            <span class="skill-cat-tag">Design / UI</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Enhanced Technical Insight Inspector Bar -->
       <div class="skill-inspector-bar" id="skill-inspector-bar">
-        <span class="skill-inspector-icon">⚡</span>
-        <span class="skill-inspector-text" id="skill-inspector-text">
-          <span class="skill-inspector-highlight">Click or hover any skill</span> to inspect Ahmed Waseem's engineering focus &amp; applications.
-        </span>
+        <div class="inspector-icon-box" id="inspector-icon-box">
+          <!-- Populated dynamically via JS -->
+          <svg class="skill-logo-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M64 8L114.7 37.3V95.7L64 125L13.3 95.7V37.3L64 8Z" fill="#00599C"/>
+            <path d="M64 16.5L106.3 41.2V90.8L64 115.5L21.7 90.8V41.2L64 16.5Z" fill="#659AD2"/>
+            <path d="M64 24.5L98 44.5V87.5L64 107.5L30 87.5V44.5L64 24.5Z" fill="#004482"/>
+            <path d="M64 36C48.5 36 36 48.5 36 64C36 79.5 48.5 92 64 92C72.8 92 80.6 87.9 85.7 81.6L75.9 75.1C72.4 79 68.4 81 64 81C54.6 81 47 73.4 47 64C47 54.6 54.6 47 64 47C68.4 47 72.4 49 75.9 52.9L85.7 46.4C80.6 40.1 72.8 36 64 36Z" fill="#FFFFFF"/>
+          </svg>
+        </div>
+        <div class="inspector-body">
+          <div class="inspector-header-line">
+            <span class="inspector-active-title" id="inspector-active-title">C</span>
+            <span class="inspector-category-badge" id="inspector-category-badge">LANGUAGE</span>
+          </div>
+          <p class="skill-inspector-text" id="skill-inspector-text">
+            Low-level memory management, pointer arithmetic, data structures, and systems programming fundamentals.
+          </p>
+        </div>
+        <div class="inspector-hint-tag">
+          <span>● Live Inspector</span>
+        </div>
       </div>
     </section>
 
@@ -289,11 +633,26 @@
             </p>
 
             <div class="featured-project-stack">
-              <span class="tech-pill">Next.js</span>
-              <span class="tech-pill">React</span>
-              <span class="tech-pill">TypeScript</span>
-              <span class="tech-pill">Tailwind CSS</span>
-              <span class="tech-pill">Vercel Edge</span>
+              <span class="tech-pill" style="--brand-color: #ffffff; --brand-glow: rgba(255, 255, 255, 0.35);">
+                <svg class="tech-mini-logo" viewBox="0 0 128 128" fill="none"><circle cx="64" cy="64" r="54" fill="#000" stroke="#444" stroke-width="6"/><path d="M42 42H52V86H42V42Z" fill="#FFF"/><path d="M51 42L85.8 86.5H86V42H96V86H87.2L51 42Z" fill="#FFF"/></svg>
+                Next.js
+              </span>
+              <span class="tech-pill" style="--brand-color: #61DAFB; --brand-glow: rgba(97, 218, 251, 0.4);">
+                <svg class="tech-mini-logo" viewBox="0 0 128 128" fill="none"><ellipse cx="64" cy="64" rx="14" ry="14" fill="#61DAFB"/><g stroke="#61DAFB" stroke-width="6" fill="none"><ellipse cx="64" cy="64" rx="48" ry="18"/><ellipse cx="64" cy="64" rx="48" ry="18" transform="rotate(60 64 64)"/><ellipse cx="64" cy="64" rx="48" ry="18" transform="rotate(120 64 64)"/></g></svg>
+                React
+              </span>
+              <span class="tech-pill" style="--brand-color: #3178C6; --brand-glow: rgba(49, 120, 198, 0.4);">
+                <svg class="tech-mini-logo" viewBox="0 0 128 128" fill="none"><rect width="128" height="128" rx="20" fill="#3178C6"/><path d="M28 46H60V55.5H46.5V96H35.5V55.5H28V46ZM68.5 81.8C72.7 85.6 78.4 87.6 84.1 87.6C92.9 87.6 98.6 83.4 98.6 76.4C98.6 69.6 93.8 66.6 87.4 63.9C82.9 62 80.4 60.5 80.4 57.7C80.4 55.3 82.4 53.5 86.2 53.5C89.4 53.5 92.4 54.7 94.4 56.1L96.8 48.9C94 47.4 90 46.4 85.8 46.4C76.8 46.4 71.6 51.5 71.6 58.2C71.6 64.4 76 67.8 82.4 70.5C87.2 72.5 89.9 74.1 89.9 77.1C89.9 79.9 87.3 81.7 83.1 81.7C78.6 81.7 74.9 79.9 72.5 77.9L68.5 81.8Z" fill="#FFF"/></svg>
+                TypeScript
+              </span>
+              <span class="tech-pill" style="--brand-color: #38BDF8; --brand-glow: rgba(56, 189, 248, 0.4);">
+                <svg class="tech-mini-logo" viewBox="0 0 128 128" fill="none"><path d="M64 34C52 34 44.5 40 41.5 52C46 46 51.3 43.8 57.3 45.2C60.8 46.1 63.2 48.6 66 51.3C70.4 55.7 75.8 61 88 61C100 61 107.5 55 110.5 43C106 49 100.7 51.2 94.7 49.8C91.2 48.9 88.8 46.4 86 43.7C81.6 39.3 76.2 34 64 34ZM40 61C28 61 20.5 67 17.5 79C22 73 27.3 70.8 33.3 72.2C36.8 73.1 39.2 75.6 42 78.3C46.4 82.7 51.8 88 64 88C76 88 83.5 82 86.5 70C82 76 76.7 78.2 70.7 76.8C67.2 75.9 64.8 73.4 62 70.7C57.6 66.3 52.2 61 40 61Z" fill="#38BDF8"/></svg>
+                Tailwind CSS
+              </span>
+              <span class="tech-pill" style="--brand-color: #ffffff; --brand-glow: rgba(255, 255, 255, 0.4);">
+                <svg class="tech-mini-logo" viewBox="0 0 128 128" fill="none"><path d="M64 16L120 112H8L64 16Z" fill="#FFF"/></svg>
+                Vercel Edge
+              </span>
             </div>
 
             <div class="featured-project-actions">

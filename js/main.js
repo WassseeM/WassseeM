@@ -282,27 +282,116 @@ class PortfolioApp {
     }
   }
 
-  // 7. Interactive Skills Inspector
+  // 7. Interactive Skills Inspector & Filter System
   initSkillsInspector() {
+    const filterBtns = document.querySelectorAll('.skill-filter-btn');
     const skillPills = document.querySelectorAll('.skill-name-pill');
+    const inspectorIconBox = document.getElementById('inspector-icon-box');
+    const inspectorTitle = document.getElementById('inspector-active-title');
+    const inspectorBadge = document.getElementById('inspector-category-badge');
     const inspectorText = document.getElementById('skill-inspector-text');
 
+    const activateSkill = (pill) => {
+      if (!pill) return;
+      skillPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+
+      const name = pill.getAttribute('data-skill') || '';
+      const desc = pill.getAttribute('data-desc') || 'Core development technology in Ahmed Waseem\'s engineering stack.';
+      const category = pill.getAttribute('data-category') || 'TECH';
+      const brandColor = pill.getAttribute('data-color') || '#00ff88';
+      const brandGlow = pill.getAttribute('data-glow') || 'rgba(0, 255, 136, 0.4)';
+
+      // Update Inspector Icon
+      const logoSvg = pill.querySelector('.skill-logo-svg');
+      if (inspectorIconBox && logoSvg) {
+        inspectorIconBox.innerHTML = logoSvg.outerHTML;
+        inspectorIconBox.style.setProperty('--brand-color', brandColor);
+        inspectorIconBox.style.setProperty('--brand-shadow', brandGlow);
+        inspectorIconBox.style.borderColor = brandColor;
+        inspectorIconBox.style.boxShadow = `0 12px 28px -4px ${brandGlow}, 0 4px 12px -2px rgba(0, 0, 0, 0.9), inset 0 1px 1.5px rgba(255, 255, 255, 0.35), inset 0 -2px 4px rgba(0, 0, 0, 0.6)`;
+      }
+
+      // Update Inspector Title
+      if (inspectorTitle) {
+        inspectorTitle.textContent = name;
+        inspectorTitle.style.color = brandColor === '#FFFFFF' ? '#FFFFFF' : brandColor;
+      }
+
+      // Update Inspector Category Badge
+      if (inspectorBadge) {
+        const catMap = {
+          'lang': 'LANGUAGE',
+          'frontend': 'FRONTEND & WEB',
+          'backend': 'DATABASE / BACKEND',
+          'cloud': 'CLOUD & DEVOPS',
+          'design': 'DESIGN & UI'
+        };
+        inspectorBadge.textContent = catMap[category] || category.toUpperCase();
+        inspectorBadge.style.borderColor = brandColor;
+        inspectorBadge.style.color = brandColor;
+      }
+
+      // Update Inspector Text
+      if (inspectorText) {
+        inspectorText.textContent = desc;
+      }
+    };
+
+    // Attach click and hover to each skill pill
     skillPills.forEach(pill => {
-      const activate = () => {
-        skillPills.forEach(p => p.classList.remove('active'));
-        pill.classList.add('active');
-
-        const name = pill.getAttribute('data-skill') || pill.textContent.replace('●', '').trim();
-        const desc = pill.getAttribute('data-desc') || 'Core development technology in Ahmed Waseem\'s engineering stack.';
-
-        if (inspectorText) {
-          inspectorText.innerHTML = `<span class="skill-inspector-highlight">${name}</span>: ${desc}`;
+      pill.addEventListener('click', () => {
+        activateSkill(pill);
+        if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+          window.soundEngine.playClick();
         }
-      };
+      });
 
-      pill.addEventListener('click', activate);
-      pill.addEventListener('mouseenter', activate);
+      pill.addEventListener('mouseenter', () => {
+        activateSkill(pill);
+      });
     });
+
+    // Category filter button tabs
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+
+        const filter = btn.getAttribute('data-filter') || 'all';
+        let firstVisible = null;
+
+        skillPills.forEach(pill => {
+          const pillCat = pill.getAttribute('data-category');
+          if (filter === 'all' || pillCat === filter) {
+            pill.classList.remove('hidden');
+            if (!firstVisible) firstVisible = pill;
+          } else {
+            pill.classList.add('hidden');
+          }
+        });
+
+        // If the currently active pill is now hidden, activate first visible pill
+        const currentActive = document.querySelector('.skill-name-pill.active');
+        if (!currentActive || currentActive.classList.contains('hidden')) {
+          if (firstVisible) activateSkill(firstVisible);
+        }
+
+        if (window.soundEngine && typeof window.soundEngine.playSelect === 'function') {
+          window.soundEngine.playSelect();
+        }
+      });
+    });
+
+    // Initialize with first pill
+    const initialActive = document.querySelector('.skill-name-pill.active') || skillPills[0];
+    if (initialActive) {
+      activateSkill(initialActive);
+    }
   }
 
   // 8. Developer Command HUD / Spotlight (Ctrl+K / Cmd+K / Button)
