@@ -47,8 +47,8 @@
   }
 
   .brand-full-name {
-    font-size: 0.9rem;
-    letter-spacing: 0.08em;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
     gap: 0.34em;
   }
 
@@ -185,6 +185,47 @@
 
   .minimal-toast {
     justify-content: center;
+  }
+}
+
+/* Compact phones (≤480px): keep the fixed navbar on a single line so the
+   hamburger/brand never get clipped by the viewport edge. */
+@media (max-width: 480px) {
+  .nav-container {
+    padding: 0 14px;
+  }
+
+  .brand-full-name {
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+  }
+
+  .brand-name-wrap {
+    gap: 4px;
+  }
+
+  .nav-right-tools {
+    gap: 5px;
+  }
+
+  .cmd-trigger-btn,
+  .warp-btn {
+    padding: 4px 7px;
+    font-size: 0.64rem;
+    gap: 4px;
+  }
+
+  .nav-toggle-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 1.15rem;
+  }
+
+  /* Keep the rotating typewriter subtitle on a single line so it never
+     reflows the hero (and everything below it) as words change. */
+  .hero-subtitle-wrap {
+    font-size: 0.9rem;
+    white-space: nowrap;
   }
 }
 

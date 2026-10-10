@@ -202,28 +202,56 @@ class PortfolioApp {
     });
   }
 
-  // 4. Navigation Scroll Spy
+  // 4. Navigation Scroll Spy (rAF-throttled, offsets cached — no layout thrashing)
   initScrollSpy() {
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link');
+    let sectionMetrics = [];
+    let activeId = '';
+    let ticking = false;
 
-    window.addEventListener('scroll', () => {
+    const measure = () => {
+      sectionMetrics = Array.from(sections).map(s => ({
+        id: s.getAttribute('id'),
+        top: s.offsetTop,
+        bottom: s.offsetTop + s.offsetHeight
+      }));
+    };
+
+    const update = () => {
+      ticking = false;
       const scrollY = window.pageYOffset + 140;
 
-      sections.forEach(current => {
-        const sectionHeight = current.offsetHeight;
-        const sectionTop = current.offsetTop;
-        const sectionId = current.getAttribute('id');
-
-        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-          navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${sectionId}`) {
-              link.classList.add('active');
-            }
-          });
+      let currentId = '';
+      for (let i = 0; i < sectionMetrics.length; i++) {
+        const m = sectionMetrics[i];
+        if (scrollY >= m.top && scrollY < m.bottom) {
+          currentId = m.id;
+          break;
         }
-      });
+      }
+
+      if (currentId && currentId !== activeId) {
+        activeId = currentId;
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${currentId}`);
+        });
+      }
+    };
+
+    measure();
+    update();
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+      measure();
+      update();
     }, { passive: true });
   }
 
@@ -264,35 +292,61 @@ class PortfolioApp {
     const navbar = document.getElementById('navbar');
     const hero3d = document.getElementById('hero-3d-wrapper');
     const heroContent = document.querySelector('.hero-content');
-    const enableParallax = window.innerWidth >= 768;
+    const reducedMotion = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const enableParallax = window.innerWidth >= 768 && !reducedMotion;
 
     let ticking = false;
+    let docMax = 0;
+    let lastPct = -1;
+    let lastScrolled = null;
+    let lastHeroY = -1;
+
+    const measure = () => {
+      docMax = document.documentElement.scrollHeight - window.innerHeight;
+    };
+    measure();
+    window.addEventListener('resize', measure, { passive: true });
 
     const update = () => {
       ticking = false;
       const y = window.scrollY || window.pageYOffset || 0;
 
-      // Top progress bar
-      if (progress) {
-        const max = document.documentElement.scrollHeight - window.innerHeight;
-        const pct = max > 0 ? Math.min((y / max) * 100, 100) : 0;
-        progress.style.width = `${pct}%`;
+      // Top progress bar (skip write when unchanged)
+      if (progress && docMax > 0) {
+        const pct = Math.min((y / docMax) * 100, 100);
+        if (Math.abs(pct - lastPct) > 0.05) {
+          lastPct = pct;
+          progress.style.width = `${pct}%`;
+        }
       }
 
-      // Navbar condensed state
-      if (navbar) navbar.classList.toggle('scrolled', y > 20);
+      // Navbar condensed state (only touch DOM on change)
+      if (navbar) {
+        const scrolled = y > 20;
+        if (scrolled !== lastScrolled) {
+          lastScrolled = scrolled;
+          navbar.classList.toggle('scrolled', scrolled);
+        }
+      }
 
       // Hero parallax (desktop only, GPU transform + opacity)
       if (enableParallax) {
         const h = window.innerHeight;
         if (y < h) {
-          if (hero3d) hero3d.style.transform = `translateY(${y * 0.18}px)`;
-          if (heroContent) {
-            heroContent.style.transform = `translateY(${y * 0.05}px)`;
-            heroContent.style.opacity = `${Math.max(0, 1 - (y / (h * 0.9)))}`;
+          // Quantize to 0.5px to skip sub-pixel writes
+          const py = Math.round(y * 0.18 * 2) / 2;
+          if (py !== lastHeroY) {
+            lastHeroY = py;
+            if (hero3d) hero3d.style.transform = `translateY(${py}px)`;
+            if (heroContent) {
+              heroContent.style.transform = `translateY(${Math.round(y * 0.05 * 2) / 2}px)`;
+              heroContent.style.opacity = `${Math.max(0, 1 - (y / (h * 0.9)))}`;
+            }
           }
-        } else if (hero3d && hero3d.style.transform) {
-          hero3d.style.transform = '';
+        } else if (lastHeroY !== 0) {
+          lastHeroY = 0;
+          if (hero3d) hero3d.style.transform = '';
           if (heroContent) {
             heroContent.style.transform = '';
             heroContent.style.opacity = '';
@@ -608,14 +662,22 @@ class PortfolioApp {
     });
   }
 
-  // 10. 3D Card Tilt
+  // 10. 3D Card Tilt (only on real pointer devices — no touch, no reduced motion)
   init3DCardTilt() {
-    if (window.innerWidth < 768) return;
+    const finePointer = window.matchMedia &&
+      window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const reduced = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!finePointer || reduced) return;
 
     const cards = document.querySelectorAll('.achievement-card, .about-card');
     cards.forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card._rect = card.getBoundingClientRect();
+      });
+
       card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
+        const rect = card._rect || (card._rect = card.getBoundingClientRect());
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         const centerX = rect.width / 2;
@@ -627,6 +689,7 @@ class PortfolioApp {
       });
 
       card.addEventListener('mouseleave', () => {
+        card._rect = null;
         card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
       });
     });

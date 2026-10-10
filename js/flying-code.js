@@ -44,6 +44,13 @@ class FlyingCodeMatrix {
     this.isWarpMode = false;
     this.warpMultiplier = 1.0;
     this.isTabActive = true;
+    this.isScrolling = false;
+    this.scrollTimer = null;
+
+    // Respect users who ask for less motion: draw a single calm frame, no loop.
+    this.reducedMotion = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.staticMode = !!this.reducedMotion;
 
     // Device-aware frame cap (30fps mobile / 60fps desktop)
     this.isMobile = window.innerWidth < 768;
@@ -122,15 +129,28 @@ class FlyingCodeMatrix {
 
     document.addEventListener('visibilitychange', () => {
       this.isTabActive = !document.hidden;
-      if (this.isTabActive) {
+      if (this.isTabActive && !this.staticMode) {
         this.lastTime = performance.now();
         this.lastRaf = 0;
         requestAnimationFrame((t) => this.render(t));
       }
     });
 
+    // Freeze the fullscreen canvas while the user is actively scrolling —
+    // the last frame stays visible under the vignette and we resume ~180ms
+    // after motion stops. This removes the biggest scroll competitor.
+    window.addEventListener('scroll', () => {
+      this.isScrolling = true;
+      clearTimeout(this.scrollTimer);
+      this.scrollTimer = setTimeout(() => { this.isScrolling = false; }, 180);
+    }, { passive: true });
+
     this.createParticles();
-    requestAnimationFrame((t) => this.render(t));
+    if (this.staticMode) {
+      this.render(performance.now());
+    } else {
+      requestAnimationFrame((t) => this.render(t));
+    }
 
     // Global Warp Toggle
     window.toggleCodeWarp = () => {
@@ -146,6 +166,7 @@ class FlyingCodeMatrix {
     this.canvas.height = this.height;
     this.centerX = (this.width * 0.5) | 0;
     this.centerY = (this.height * 0.5) | 0;
+    if (this.staticMode && this.particles.length) this.render(performance.now());
   }
 
   createParticles() {
@@ -171,6 +192,25 @@ class FlyingCodeMatrix {
   render(currentTime) {
     if (!this.isTabActive) return;
 
+    // Reduced motion: paint one quiet, non-animated frame and stop for good.
+    if (this.staticMode) {
+      this.ctx.fillStyle = '#040406';
+      this.ctx.fillRect(0, 0, this.width, this.height);
+      this.ctx.font = '600 12px "JetBrains Mono", monospace';
+      this.ctx.textBaseline = 'middle';
+      for (let i = 0; i < this.particles.length; i++) {
+        const p = this.particles[i];
+        const depth = this.fov + p.z;
+        if (depth <= 10) continue;
+        const scale = this.fov / depth;
+        this.ctx.fillStyle = p.isAccent
+          ? 'rgba(0, 255, 136, 0.45)'
+          : 'rgba(203, 213, 225, 0.2)';
+        this.ctx.fillText(p.text, (this.centerX + p.x * scale) | 0, (this.centerY + p.y * scale) | 0);
+      }
+      return;
+    }
+
     const rafDelta = this.lastRaf ? Math.min(currentTime - this.lastRaf, 100) : 16.7;
     this.lastRaf = currentTime;
 
@@ -188,6 +228,13 @@ class FlyingCodeMatrix {
 
     // Frame limiter: skip draws to keep mobile GPU/battery cool
     if (currentTime - this.lastTime < this.targetInterval - 1) {
+      requestAnimationFrame((t) => this.render(t));
+      return;
+    }
+
+    // Yield entirely while scrolling — no fillRect, no particle work
+    if (this.isScrolling) {
+      this.lastTime = currentTime;
       requestAnimationFrame((t) => this.render(t));
       return;
     }

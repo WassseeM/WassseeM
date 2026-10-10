@@ -12,19 +12,17 @@
   <meta property="og:title" content="Ahmed Waseem — Software Developer & B.Tech CS Student">
   <meta property="og:description" content="Building modern websites and solving problems with code. Explore my skills, background, and achievements.">
 
-  <!-- Google Fonts: Syne, Inter, Space Grotesk, JetBrains Mono -->
+  <!-- Google Fonts: Syne, Inter, Space Grotesk, JetBrains Mono
+       (only the weights actually used by the stylesheets are requested) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&family=Syne:wght@800&display=swap" rel="stylesheet">
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/responsive.css">
-
-  <!-- Three.js CDN for 3D Glowing Code Sphere -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
@@ -46,8 +44,8 @@
       <a href="#hero" class="nav-brand" id="brand-logo" aria-label="Ahmed Waseem Portfolio">
         <span class="brand-name-wrap">
           <span class="brand-full-name">
-            <span class="bn-first">AHMED</span>
-            <span class="bn-last">WASEEM</span>
+            <span class="bn-first">Ahmed</span>
+            <span class="bn-last">Waseem</span>
           </span>
           <span class="brand-dot-indicator"></span>
         </span>
@@ -878,9 +876,10 @@
   <!-- Toast Container -->
   <div class="toast-container" id="toast-container" aria-live="polite"></div>
 
-  <!-- JavaScript Modules -->
-  <script src="js/flying-code.js"></script>
-  <script src="js/three-scene.js"></script>
-  <script src="js/main.js"></script>
+  <!-- JavaScript Modules (Three.js loaded non-blocking at end of body) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+  <script src="js/flying-code.js" defer></script>
+  <script src="js/three-scene.js" defer></script>
+  <script src="js/main.js" defer></script>
 </body>
 </html>

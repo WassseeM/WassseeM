@@ -37,6 +37,13 @@ class DeveloperCodeSphere {
     this.isVisible = true;
     this.isTabActive = true;
 
+    // Respect users who ask for less motion: render a static frame and only
+    // refresh on user interaction instead of running continuous animation.
+    this.reducedMotion = !!(window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    this.needsRender = true;
+    this._pendingRender = false;
+
     // Frame limiter + adaptive performance governor
     this.clock = new THREE.Clock();
     this.lastRender = 0;
@@ -391,8 +398,9 @@ class DeveloperCodeSphere {
   bindEvents() {
     window.addEventListener('resize', () => this.onResize(), { passive: true });
 
-    // Subtle mouse parallax on desktop
+    // Subtle mouse parallax on desktop (skipped under reduced motion)
     window.addEventListener('mousemove', (e) => {
+      if (this.reducedMotion) return;
       const x = (e.clientX / window.innerWidth) * 2 - 1;
       const y = -(e.clientY / window.innerHeight) * 2 + 1;
       this.mouse.targetX = x * 0.28;
@@ -420,6 +428,7 @@ class DeveloperCodeSphere {
         this.dragRotation.targetX = Math.max(-0.65, Math.min(0.65, this.dragRotation.targetX + dy * 0.007));
 
         this.prevTouch = { x: e.clientX, y: e.clientY };
+        this.requestRender();
       }
     });
 
@@ -462,6 +471,7 @@ class DeveloperCodeSphere {
       this.dragRotation.targetX = Math.max(-0.65, Math.min(0.65, this.dragRotation.targetX + dy * 0.008));
 
       this.prevTouch = { x: currentX, y: currentY };
+      this.requestRender();
     }, { passive: true });
 
     window.addEventListener('touchend', () => {
@@ -473,6 +483,7 @@ class DeveloperCodeSphere {
     canvas.addEventListener('click', () => {
       if (isTouchScroll) return;
       this.pulseEnergy = 0.8;
+      this.requestRender();
       if (window.showToast) {
         window.showToast("⚡ Ahmed Waseem: Code Sphere Pulse Active");
       }
@@ -490,6 +501,7 @@ class DeveloperCodeSphere {
     // Sleep when tab is hidden
     document.addEventListener('visibilitychange', () => {
       this.isTabActive = !document.hidden;
+      if (this.isTabActive) this.requestRender();
     });
   }
 
@@ -505,9 +517,43 @@ class DeveloperCodeSphere {
 
     this.renderer.setSize(width, height);
     this.applyTier();
+    this.requestRender();
+  }
+
+  // Schedule a single static repaint (reduced-motion mode only)
+  requestRender() {
+    if (!this.reducedMotion) return;
+    this.needsRender = true;
+    if (this._pendingRender) return;
+    this._pendingRender = true;
+    requestAnimationFrame(() => {
+      this._pendingRender = false;
+      this.animate();
+    });
+  }
+
+  // One-shot static frame: honours drag but has no autonomous motion
+  renderStatic() {
+    if (!this.renderer || !this.scene || !this.camera) return;
+    this.tiltGroup.rotation.x = this.dragRotation.targetX;
+    this.tiltGroup.rotation.y = this.dragRotation.targetY;
+    if (this.pulseEnergy > 0 && this.coreGlow) {
+      const ps = 1.0 + this.pulseEnergy * 0.2;
+      this.coreGlow.scale.set(ps, ps, ps);
+      this.pulseEnergy = 0;
+    }
+    this.renderer.render(this.scene, this.camera);
   }
 
   animate() {
+    // Reduced motion: no continuous loop — render on demand only.
+    if (this.reducedMotion) {
+      if (!this.needsRender || !this.isVisible || !this.isTabActive) return;
+      this.needsRender = false;
+      this.renderStatic();
+      return;
+    }
+
     requestAnimationFrame(() => this.animate());
 
     const now = performance.now();

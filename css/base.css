@@ -13,6 +13,9 @@ html {
   scroll-behavior: smooth;
   color-scheme: dark;
   background-color: var(--bg-primary);
+  /* Clamp slight horizontal overflow from the reveal/slide-in transforms.
+     No position: sticky is used, so clipping the root is safe. */
+  overflow-x: hidden;
 }
 
 body {
@@ -30,10 +33,9 @@ body {
 /* Flying Code Canvas Background */
 #flying-code-canvas {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: 0;
   pointer-events: none;
 }
@@ -41,10 +43,9 @@ body {
 /* Ambient Radial Mask (Keeps center readable) */
 .ambient-vignette {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: 1;
   pointer-events: none;
   background: radial-gradient(circle at 50% 30%, rgba(5, 5, 5, 0.4) 0%, rgba(5, 5, 5, 0.92) 80%);
@@ -79,7 +80,9 @@ body {
 a {
   color: inherit;
   text-decoration: none;
-  transition: all var(--transition-fast);
+  transition: color var(--transition-fast),
+              background-color var(--transition-fast),
+              opacity var(--transition-fast);
 }
 
 button {
